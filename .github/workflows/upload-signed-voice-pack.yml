@@ -30,7 +30,13 @@ jobs:
           branch=f'temporary/encrypted-voice-transfer-{run_id}-{attempt}'
           prefix=f'transfer/{run_id}-{attempt}'
           work=Path(tempfile.mkdtemp(prefix='mlv-encrypted-transfer-',dir=os.environ['RUNNER_TEMP']))
-          def run(args,**kwargs):return subprocess.run(args,check=True,timeout=kwargs.pop('timeout',40),capture_output=True,**kwargs)
+          def run(args,**kwargs):
+           try:result=subprocess.run(args,timeout=kwargs.pop('timeout',40),capture_output=True,**kwargs)
+           except subprocess.TimeoutExpired:raise RuntimeError('Bounded runner command timed out; sensitive arguments suppressed') from None
+           if result.returncode:
+            if args[0]=='gh':raise RuntimeError('GitHub command failed: '+result.stderr.decode())
+            raise RuntimeError('Runner command failed: '+args[0]+'; sensitive arguments suppressed')
+           return result
           def api(path,method='GET',data=None,missing=False):
            args=['gh','api',f'repos/{REPO}/'+path,'--method',method]
            if data is not None:
