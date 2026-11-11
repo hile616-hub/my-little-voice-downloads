@@ -1,0 +1,38 @@
+{
+  "runId": "43095019484",
+  "attempt": "1",
+  "file": "My-Little-Voice-Play-2-transfer.zip",
+  "bytes": 149627019,
+  "sha256": "9cda635311099e903fd9d37df378a00fa4cc4ff5192ed93e8cce873511567f09",
+  "publicKeySha256": "869432d58e27ee66e7b89813b040c932b898305724df74d372cbc2cdb110acdd",
+  "encryption": "AES-256-CTR; key/IV wrapped with RSA-OAEP-SHA256; final plaintext hash pinned in workflow",
+  "wrappedKeyBase64": "ipc2Q4xLALZ8r0PLZR5fUCGMG80zxhmbc4SvSKyHtLuA7EbQqKh+zivKwoMyFe5p25c9hDLi7n0TeW3bifnBBwyHSuX4w35nEpWY5wLDTuWu65jWMvm/MIL3sP29cmz7SrGTYSRff6MhPto9TtcNxs7Hy8khJNWD6dF/DizpGlinqkuKLOgfVgfWoaL97zxm3o0ADW22G3NUzlpDcDjazluJ2mk+mCzj6HdHVpd1etSB5KjCPDcMlJQv9v2HlK+Nm2WsKpMTgQNrbLz8l7L2Gg2KRSm6SxfI66SFjnXa2VuE3gx4rd74KLr1mDcFaJBvyU7apbnwv4VdcW+GVYGKUD8d/INXzKnAy9Z80F9XSnEm766TmHewzOhsgHyofBeAwr+PfSuPz8ShTeDGk951bHSFY8R5XCzYKFtaRykLvdtxb91QmWFPjmrf32ZDmGNcYMMzYKrBqOWtyY9//js15zgZdtSfgj6xnOCGh4Lm2CzS6z7g4PyMnvKCl6vkq6xv",
+  "ciphertextSha256": "d583701681c06d85899b7600411fe757103512bb910a6ac5dbe6fce5fdfa1c38",
+  "chunks": [
+    {
+      "file": "payload-001.enc",
+      "bytes": 33554432,
+      "sha256": "1e54b7e8c189c94a74deb7379c42501ab739fdc80ea6d7732a5bf0f72701be43"
+    },
+    {
+      "file": "payload-002.enc",
+      "bytes": 33554432,
+      "sha256": "79cd96efefefc7baa654cfdce3e2cfa6810f78d1c7b412a2212ad1e70aa7fa8d"
+    },
+    {
+      "file": "payload-003.enc",
+      "bytes": 33554432,
+      "sha256": "223bc83064d81d49b7e74b98aed2dc0c5ec915912593e833f13e900a7fa6e584"
+    },
+    {
+      "file": "payload-004.enc",
+      "bytes": 33554432,
+      "sha256": "9d3edc8b5aa0b447f460e2d827720036b5481aa52fb114fb537e9b68a125ea89"
+    },
+    {
+      "file": "payload-005.enc",
+      "bytes": 15409291,
+      "sha256": "848da8d43211a2b6f15570cc5e86e17d8958d9afc59d3f9d6253c369b7d94e9c"
+    }
+  ]
+}
