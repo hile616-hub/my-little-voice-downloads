@@ -1,0 +1,58 @@
+{
+  "runId": "43069539645",
+  "attempt": "1",
+  "file": "My-Little-Voice-store-test-1-transfer.zip",
+  "bytes": 297443557,
+  "sha256": "49f414855297623c011305bfc53be0ca6576ba58990d9452262fa0d927c8b08a",
+  "publicKeySha256": "61f9193038ac243625d9edaba6fcfb2cba0fa3e19fa3b30983faa6c5d3a6c71d",
+  "encryption": "AES-256-CTR; key/IV wrapped with RSA-OAEP-SHA256; final plaintext hash pinned in workflow",
+  "wrappedKeyBase64": "NN7CuofrC2u1YVk8liEOw/9hXiHw/6e5FQnm+wlnQKS6iy0o5wJZiCF2XagoxzBg+9SRrsbWqjJoZIH8QoQX/APEgDtmNIyqbxhJUhjIZTA9i737+dATXJB2xK8YUxyDJeXgDTBni3nJ0lNvUcsXbYrqYakrAIHIzevDniv9JVZrIw3fUxWOWbTjfN2vw+2hYxgJhl+LbmZmH584BTeTL2jFBn4yk4htXbaXGwMLpGfvfQ6cUlgARt9JJNLACcJdN+6l3cWwhb8HSxY5pFnfLpEIAPMPg9e0qH6QKdUluwaeAhahfBrWSEhtFrICETrv1XWIgIBAFPq0mrzBVWcEyPU88DdC6D08cQB8JGmR4yjH9BDiwNHNxXlJ0qCOUyjrPMsTlRsd5dhA5H5S4VJ3xkOsX9OpXe1HVlt00NXL4mBoJuOt49IWvLIR9EYV38StFahC1Ms4AUSSTDWj2Wz5QuS0hj9sD5WLOhVY+3O59uFGFYYDkvKxTi1HRKX70bFT",
+  "ciphertextSha256": "04df18dd56fb19a6bde4831a58c2d9b78160ca9b89999199ba448c4dcdc3011f",
+  "chunks": [
+    {
+      "file": "payload-001.enc",
+      "bytes": 33554432,
+      "sha256": "16c28d15d4181e086a181fa21a9795d25407daf2e7e8838202361b4739b693b1"
+    },
+    {
+      "file": "payload-002.enc",
+      "bytes": 33554432,
+      "sha256": "1ddb953f68e2b2cd1e91d57d18a66a19b90fa629563570e308bf4c4a325c7f0a"
+    },
+    {
+      "file": "payload-003.enc",
+      "bytes": 33554432,
+      "sha256": "d06f08fd4584e1caa714bdcfe95bef2bfe2b6932f0aa8ac654ec456a33858cb9"
+    },
+    {
+      "file": "payload-004.enc",
+      "bytes": 33554432,
+      "sha256": "ecababe2d7e7e37dd869cad0e37b48c013739fc58dcccd473d6d8d09aace9743"
+    },
+    {
+      "file": "payload-005.enc",
+      "bytes": 33554432,
+      "sha256": "d1bcb3e5f0aae1eda490778ebddafaec8bee1734fbd90865f7a8143f42e7b06c"
+    },
+    {
+      "file": "payload-006.enc",
+      "bytes": 33554432,
+      "sha256": "6bea26203af4f235163a789a194096df565fd8e26366eb5dd1901a98e41d3cd1"
+    },
+    {
+      "file": "payload-007.enc",
+      "bytes": 33554432,
+      "sha256": "e828fb3e15d1ae2ee1456c95a7a8363e4afcaeeadb6de8ed94559cf48493310c"
+    },
+    {
+      "file": "payload-008.enc",
+      "bytes": 33554432,
+      "sha256": "42bce0b8e521b7e67b80c40d737c8ec13bfba4bb7e109061f74d13dacd62b81b"
+    },
+    {
+      "file": "payload-009.enc",
+      "bytes": 29008101,
+      "sha256": "53334bc201cfed4e02cbdd16d23f2e2d61795140e6d81cff59d301fa6c0d5d62"
+    }
+  ]
+}
