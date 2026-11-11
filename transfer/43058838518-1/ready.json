@@ -1,0 +1,33 @@
+{
+  "runId": "43058838518",
+  "attempt": "1",
+  "file": "fi-ru-supertonic3-int8-v4.aacvoice",
+  "bytes": 112686984,
+  "sha256": "ab2a5600c49e9850658ecf7d13bcc8f8d20b76783ff29b96d97bbc364cef51cb",
+  "publicKeySha256": "fae06ca80fdc417bfe75d4aa92f848f37b77bd01f39b80ddf3c7d59ccbd66e8a",
+  "encryption": "AES-256-CTR; key/IV wrapped with RSA-OAEP-SHA256; final plaintext hash pinned in workflow",
+  "wrappedKeyBase64": "BAcgAfzyqabnuMHcINy8LjptDclPX70GcxHuQ4qOATT1FJh7rEzWwIL69ECmPWFNX+nE5ZciPwMMg5GrHomuUU/6UBRmUNkLsdki2vgacMorzv0VumH9XpWR1skD6FLwcuCV6FGSIB0wFjA4chV+VB2iWbGJL5nwh+SgRFS8odamZMe80c3+24n8Q8O4neiln/fhb3uEpIVn76JKhGSfbBvHRMe/qDd3EtNKZE8Yu+AS3vatodivz3qKQ+j27ngYtixftWa3gw9WODUyS5m1W8qQkiK4vXDaxWHw7CRl02fLzeIhCvTY8O0ulR1+sqJ0W1sMQHS6FBaxf5QesQluFFs5Dcg1OOyt3zuVXJRwB6KyAYHLyoGyCg41YtJrivLLV530h+bZlerx0uiUmk7twnEJOJv2zYO2AUdZvGqRp3XX7rc9Xp+arCvsaXnWERVNjTXGUvMlQEsMn437Ojv0EkOBRlG06u6HCzvniuT1EbG0mn/OKvYwg8MQzUL0aIRn",
+  "ciphertextSha256": "dcdb4d2ab3dd913f14d754c941bf3bbce718cca9b082d34f146e53c42b03a3e5",
+  "chunks": [
+    {
+      "file": "payload-001.enc",
+      "bytes": 33554432,
+      "sha256": "b8e3661a5326b775879d9be1dd969c98b4c6198895b91fe12cfa6aa8de273280"
+    },
+    {
+      "file": "payload-002.enc",
+      "bytes": 33554432,
+      "sha256": "1492e64f7e6afcfbe36ac493a9ca08ead2b509c2a674ddc52e6d7f288e12c8b9"
+    },
+    {
+      "file": "payload-003.enc",
+      "bytes": 33554432,
+      "sha256": "b4dff7782d4bbcdb8f3962b496ac1d31a865dafa135e2c857038c91fc8430985"
+    },
+    {
+      "file": "payload-004.enc",
+      "bytes": 12023688,
+      "sha256": "46cce81cc13d5d621e7de73bb31ef36334fc15b9cd9ffe10a7486fd11a1c3123"
+    }
+  ]
+}
