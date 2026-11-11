@@ -1,0 +1,17 @@
+name: Probe draft voice upload runner
+on:
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - name: Verify existing unpublished release access
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          gh api repos/hile616-hub/my-little-voice-downloads/releases/441837093 --jq 'if .id == 441837093 and .draft then {id, draft} else error("Existing release must remain unpublished") end'
+          echo 'Workflow execution and automatic release-token access verified.'
