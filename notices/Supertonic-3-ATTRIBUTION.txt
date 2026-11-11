@@ -1,0 +1,31 @@
+Finnish and Russian speech: Supertonic 3 INT8, Supertone Inc.
+Model license: OpenRAIL-M (full text: Supertonic-3-OpenRAIL-M.txt).
+Original reference code: MIT, Copyright (c) 2025 Supertone Inc.
+Full permission/disclaimer: Supertonic-code-MIT.txt.
+Sherpa reference adaptation: Apache-2.0, Copyright (c) 2026 zengyw.
+Full terms: Sherpa-ONNX-Apache-2.0.txt.
+
+MODIFICATION NOTICE (2026-11-08): Four-graph pipeline and NFKD Unicode frontend
+ported to native Java using the existing ONNX Runtime Android 1.23.2 dependency.
+Added explicit Finnish/Russian speaker routing, deterministic token/speaker seed,
+bounded message chunks, cancellation checkpoints and finite/non-silent PCM checks.
+The original INT8 pack used the upstream graph files. The optimized version-3
+pack substitutes the supplied vector_estimator.int8.onnx (SHA-256
+6fd0f1637a0192ec2ec160a899045d8138395100a3c25414134adf76abd3f57b).
+The three other graphs are unchanged. The optimizer settings and weight
+equivalence have not been independently established.
+Credit scope: zengyw is credited for the sherpa-onnx reference adaptation,
+not as the author of the separately supplied graph optimization. My Little Voice
+adapts that reference pipeline for this Android app. The project owner supplied
+the optimized graph archive; the optimizer author/tool/version were not recorded.
+No additional optimization authorship or publisher endorsement is claimed.
+Emily is upstream F5, row 4; Alex is upstream M1, row 5. Sample rate 44100 Hz.
+
+Supertonic-3-model-record.json records source archive URL/SHA-256, all asset sizes
+and hashes, voice IDs, inference settings, signed test-pack identity and source
+snapshot hashes. Retain this record and full notices with redistributed apps.
+The signed version-3 test pack includes the model licence and reference-code
+licences. Carry this modification notice with future redistributions.
+The full development/recovery guide and captured reference code are committed
+under docs/languages/supertonic. English/Estonian records remain in voices/*/manifest.json.
+This record does not contain private APK keys or pack-signing private keys.
