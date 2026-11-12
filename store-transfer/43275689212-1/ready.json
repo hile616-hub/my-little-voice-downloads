@@ -1,0 +1,18 @@
+{
+  "runId": "43275689212",
+  "attempt": "1",
+  "file": "mlv-english-listening-transfer-20261112.zip",
+  "bytes": 583265,
+  "sha256": "80a33245cdd9593f4a72cae1bab16ab652743c90c6f2e574199e243cb6778d03",
+  "publicKeySha256": "af202f775f87327b4e49af93853671fabb80517d7b28b1bd6d2da7ed4f4ffaed",
+  "encryption": "AES-256-CTR; key/IV wrapped with RSA-OAEP-SHA256; final plaintext hash pinned in workflow",
+  "wrappedKeyBase64": "LzxSVMqor897f4D6y2QPwrrA+1gSPYqO5YgD1BAiwQzgxcT8mPc+/P7MjcqdWcSa6ehe/nXFOxRb/tRDkBImAG2IV/RJuoiEx8+gtRKi7B4i6feZgTF7hX93dDQwGxvyGH+zBfIFW6d9f/vUy+jRCBxFRZ+WXYMZ4x+5QcNzF+WRQMbaQ7VXuEAz3En3sSBq0GyTodJ2ud0pwSmXabgQU0Q4rSrWUTIgnqULG0eqWZonXwcwhNKa1jsdQLa/Sz3MM52hUGj6Blk0FvTpRc1GsIfTEcrmOw/rM4f7fknU7eH7NfVJaHVuEIUYVuCEIB9qee5FvyDEV4vqO6qSWMnCGSJmfIeqFxXUz8wzrTILV5p+LmRmn3OqAjIzksAMPPr5aCNKfqrhc9f8hxz0t6oYtNUZVLPj45N1hQhuPPaol40XOKX8ZtZBHii9QShnj7KfgYGtWfPsewSBuWQYZ4nIENXTizRePUVs5k/UYJvcPcFCkZUFkGLXoVB4gp58GgKR",
+  "ciphertextSha256": "934801314487d45dd3431a4d1536087c0f3ec2e6deecd9cf2348b0a8c8b36826",
+  "chunks": [
+    {
+      "file": "payload-001.enc",
+      "bytes": 583265,
+      "sha256": "934801314487d45dd3431a4d1536087c0f3ec2e6deecd9cf2348b0a8c8b36826"
+    }
+  ]
+}
