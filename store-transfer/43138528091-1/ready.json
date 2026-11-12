@@ -1,0 +1,53 @@
+{
+  "runId": "43138528091",
+  "attempt": "1",
+  "file": "My-Little-Voice-Play-3-pr27-transfer.zip",
+  "bytes": 263502282,
+  "sha256": "18cdb0b3ca7eb31b7fbd37214404741011f6dc821cea09b62cc46d5c95b8a95d",
+  "publicKeySha256": "d6873053b2a055b52437a28bce88e972ee115e24e8c7fb1e9f95a2c0d7992276",
+  "encryption": "AES-256-CTR; key/IV wrapped with RSA-OAEP-SHA256; final plaintext hash pinned in workflow",
+  "wrappedKeyBase64": "OTUzuojKWGWEAEnRuBzJrWwTaZkVd+I/VCt2DUw681a+sm0zJR9g1XXaXfoA8eXIZTs6ywKvVDs3zpJyn86i/Ayq4gD3adNXUfg52yCoAjQgHyEeu5Nq22DuGamfo4SZZ36qX/XZx7hKyj5KUieC4mc47lZ06VQPN1FXCVSSUc0R1hUkAE7JOe9ldW4punWPaMrV+DVOcPNxQuPxvmRhF+KYLE0PGlzN9LpRzdULlGS12e6Ppi2k3Fv0cTj1/ByKTlpDXWQnZKyUtEU4+qMxvm4Z6zcV5aTAu2kYKIlQTX5cpGU2PvrBnZ2yeTCuM7CSb8PJfdkr7545KFZYd0/7TdDDnU/tY6/3pvgZTp1ITk/EiEVSv3wJoPgmFEh5YaWz+q02QaUNZWnYs4gMPItUgreoGAifYN8BhcpAVdkyvlV14u9iDCcBJzLOwAyuNIBfr6261uIWPbYFWx9O2NL+Unjov0eFyRCxAonIF04U3oNofWVhCZoJ86qyfHh0QxLG",
+  "ciphertextSha256": "f8a3a22914a525f66ce396b79725b0c440e9be9d7fecb2f3b7bc04507ddb54da",
+  "chunks": [
+    {
+      "file": "payload-001.enc",
+      "bytes": 33554432,
+      "sha256": "c6bf90c52d47583381a34efdc979f8c879646b5b7f858bfa539341b43b78d2bd"
+    },
+    {
+      "file": "payload-002.enc",
+      "bytes": 33554432,
+      "sha256": "e393864ae5f39eef451ad0b7bd7d95071c7e929d72999f74c3d7df59e8f7a0bd"
+    },
+    {
+      "file": "payload-003.enc",
+      "bytes": 33554432,
+      "sha256": "7b07ebce853d234cd1e83ab80c53ecaa1388d4d1e3f9b256ddf31308d798028f"
+    },
+    {
+      "file": "payload-004.enc",
+      "bytes": 33554432,
+      "sha256": "b705cc79878bca6d7701f8e789f6fcea1c4ca86d77c79b63d0974c8cf91d48e8"
+    },
+    {
+      "file": "payload-005.enc",
+      "bytes": 33554432,
+      "sha256": "6f50987d3ae750880cd79cc8228b9ea0083a02e2a21967d315da30669d017102"
+    },
+    {
+      "file": "payload-006.enc",
+      "bytes": 33554432,
+      "sha256": "26d126696428a60411cb564251922707c933cf9e755c0b18428c069fd420c883"
+    },
+    {
+      "file": "payload-007.enc",
+      "bytes": 33554432,
+      "sha256": "64d64342a19059973aa988ac5846b226cc7ecea0e01e32f2260d0d0fe72236ff"
+    },
+    {
+      "file": "payload-008.enc",
+      "bytes": 28621258,
+      "sha256": "d627679433eb0641c042328679e43ca59aa55a41fffbe092333b21bde06344ed"
+    }
+  ]
+}
