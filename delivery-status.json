@@ -2,6 +2,6 @@
   "runId": "43640143353",
   "attempt": "1",
   "state": "running",
-  "stage": "decrypt_and_verify",
+  "stage": "verify_signed_files",
   "signingMaterialUsed": false
 }
