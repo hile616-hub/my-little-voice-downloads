@@ -2,6 +2,6 @@
   "runId": "43604621507",
   "attempt": "1",
   "state": "running",
-  "stage": "starting",
+  "stage": "waiting_transfer",
   "signingMaterialUsed": false
 }
