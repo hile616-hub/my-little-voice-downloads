@@ -1,0 +1,18 @@
+{
+  "runId": "43638035919",
+  "attempt": "1",
+  "file": "button-colors-transfer.zip",
+  "bytes": 3252241,
+  "sha256": "55a719f69ba2276872fe7618c54175f5c3acba35527e62a519a41fd5c3d2ed21",
+  "publicKeySha256": "7b672e0647f5ec3f89d4865e9d226b7082e2a749eb2edf8b8a8b21339bd7f022",
+  "encryption": "AES-256-CTR; key/IV wrapped with RSA-OAEP-SHA256; final plaintext hash pinned in workflow",
+  "wrappedKeyBase64": "W2x/hvjgehe/wscQhXfKa9tekHs9av8M1Osztb2ZmvN0PX19PiBaEo0xI/bvaa7nC0U4KZD4XRsg+7FEHz/482CvTDZvE7RcFbbns8BUOiDDMsxzilAWgvJEmo4MXNlSUXgIUGKJ+xrBAQ39D8sm4Lbbv6DFxFyqHWNlpwJlJ2tgM+UMeYoU7wAn3evX+/+61Rbu863NoN2nYjPgnuVTFCiuVlRyys+0m13vxzWFZY/MPXrPdNp3VxzkNqhVEIfCiylsFu8F8wyeRLnNVVm64p9+7CAp/ixgAVhwuatWBdGvbykQ36utv2trUEeO11H8/D52DmkI4xjSFdTmTG0FCTOO3mTTQsM47hRbprs6JLetd3h8B516wGgm/wJAhT6nMntzosS7IOpHqAwYhq7KZe5rpXXk6lKIUtKsbab5DnAfgHDywSqYOi7vvHtuwi/LPnMmeMbj8DHNTh0cJHfdLQqlrvyI4QqLkoMghuimWApGWTgSTEjB4wQf7IHdiXJh",
+  "ciphertextSha256": "5976d002ff2fcaacec340a7c395eefa87306ff7c417025b34154e13cac13d660",
+  "chunks": [
+    {
+      "file": "payload-001.enc",
+      "bytes": 3252241,
+      "sha256": "5976d002ff2fcaacec340a7c395eefa87306ff7c417025b34154e13cac13d660"
+    }
+  ]
+}
