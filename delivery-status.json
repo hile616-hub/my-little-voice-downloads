@@ -1,7 +1,7 @@
 {
   "runId": "43638035919",
   "attempt": "1",
-  "state": "running",
-  "stage": "upload_verified_assets",
+  "state": "success",
+  "stage": "complete",
   "signingMaterialUsed": false
 }
