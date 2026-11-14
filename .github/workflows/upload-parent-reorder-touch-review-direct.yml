@@ -1,0 +1,162 @@
+name: Deliver tested Parent reorder review images to owner draft
+on:
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: mlv-app-draft-442000375
+  cancel-in-progress: false
+jobs:
+  upload:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - name: Receive encrypted review images and verify draft attachments
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PYRUNNER'
+          # Runs only on a disposable GitHub-hosted runner. No application signing keys are used.
+          import os,json,subprocess,time,tempfile,hashlib,base64,shutil,zipfile
+          from pathlib import Path
+          from urllib.parse import quote
+          import traceback
+          os.umask(0o077)
+          SPEC=json.loads('{"repository": "hile616-hub/my-little-voice-downloads", "tag": "store-test-1", "releaseId": 442000375, "file": "reorder-touch-transfer.zip", "path": "/workspace/mlv-live-reorder/reorder-touch-transfer.zip", "bytes": 7326897, "sha256": "1ec5f4c838874014cf3498cbb6ff6645d01fc1e4acf0ce0ea68b0cac5fc7fa4e", "chunks": 1, "files": {"My-Little-Voice-Reorder-Touch-Review.mp4": {"bytes": 2974616, "sha256": "dd834b6572938f23cddf43d3c3e9c75360c5ab83d2a9eb4158c31ff0b5067311"}, "My-Little-Voice-Reorder-Touch-Review.zip": {"bytes": 4351670, "sha256": "ef62aa60f3ee1d2100364560e73bc98d27a4416828ac5e8199919cd58a46754a"}, "My-Little-Voice-Reorder-Touch-Review.zip.sha256": {"bytes": 107, "sha256": "94c90864f4f142d9b822060146a02fc32e7b20e61f8289590bc70f26a952cda1"}}, "source": "150a3d0dfe7a0e636a19f8ce0d565178e67c294c"}')
+          BASELINE=set(['My-Little-Voice-1-GetApps.apk', 'My-Little-Voice-1-Play.aab', 'My-Little-Voice-10-English-Play-9x16-Phone-Tablets.zip', 'My-Little-Voice-10-English-Play-9x16-Phone-Tablets.zip.sha256', 'My-Little-Voice-10-English-Play-Screenshots.zip', 'My-Little-Voice-10-English-Play-Screenshots.zip.sha256', 'My-Little-Voice-10-Play.aab', 'My-Little-Voice-10-Play.aab.sha256', 'My-Little-Voice-2-Play.aab', 'My-Little-Voice-3-Play.aab', 'My-Little-Voice-4-Play.aab', 'My-Little-Voice-4-Play.aab.sha256', 'My-Little-Voice-5-Play.aab', 'My-Little-Voice-5-Play.aab.sha256', 'My-Little-Voice-6-Play.aab', 'My-Little-Voice-6-Play.aab.sha256', 'My-Little-Voice-7-Play.aab', 'My-Little-Voice-7-Play.aab.sha256', 'My-Little-Voice-8-Play.aab', 'My-Little-Voice-8-Play.aab.sha256', 'My-Little-Voice-9-Play.aab', 'My-Little-Voice-9-Play.aab.sha256', 'My-Little-Voice-Appearance-Review.zip', 'My-Little-Voice-Appearance-Review.zip.sha256', 'My-Little-Voice-Button-Color-Review.zip', 'My-Little-Voice-Button-Color-Review.zip.sha256', 'My-Little-Voice-English-listening-20261112.zip', 'My-Little-Voice-English-listening-20261112.zip.sha256', 'My-Little-Voice-Ocean-Saved-Pink.png', 'My-Little-Voice-Ocean-Theme-Colors.png', 'My-Little-Voice-Parent-Live-Reorder.mp4', 'My-Little-Voice-Parent-Reorder-Review.zip', 'My-Little-Voice-Parent-Reorder-Review.zip.sha256', 'My-Little-Voice-Pink-Restored.png', 'My-Little-Voice-Themes-Comparison.png', 'Play-10-AUDIT.txt', 'Play-10-audit.json', 'Play-2-README.txt', 'Play-2-SHA256SUMS', 'Play-2-aab-audit.json', 'Play-2-artwork-audit.json', 'Play-2-build.json', 'Play-2-checks.json', 'Play-3-README.txt', 'Play-3-SHA256SUMS', 'Play-3-aab-audit.json', 'Play-3-artwork-privacy-audit.json', 'Play-3-build.json', 'Play-3-checks.json', 'Play-3-signing-verification.json', 'Play-4-README.txt', 'Play-4-SHA256SUMS', 'Play-4-aab-audit.json', 'Play-4-artwork-voices-privacy-audit.json', 'Play-4-build.json', 'Play-4-checks.json', 'Play-4-family-data-upgrade.json', 'Play-4-voice-inputs-signing-recovery.json', 'Play-5-AUDIT.txt', 'Play-5-audit.json', 'Play-6-AUDIT.txt', 'Play-6-audit.json', 'Play-7-AUDIT.txt', 'Play-7-audit.json', 'Play-8-AUDIT.txt', 'Play-8-audit.json', 'Play-9-AUDIT.txt', 'Play-9-audit.json', 'README.txt', 'SHA256SUMS', 'aab-audit.json', 'apk-audit.json', 'audit-summary.json', 'build.json', 'voice-download-verification.json'])
+          REPO='hile616-hub/my-little-voice-downloads';RELEASE=442000375
+          APP_TAG='store-test-1'
+          NAME=SPEC['file'];SIZE=SPEC['bytes']
+          SHA=SPEC['sha256']
+          run_id=os.environ['GITHUB_RUN_ID'];attempt=os.environ['GITHUB_RUN_ATTEMPT']
+          branch=f'temporary/encrypted-store-transfer-{run_id}-{attempt}'
+          prefix=f'store-transfer/{run_id}-{attempt}'
+          work=Path(tempfile.mkdtemp(prefix='mlv-encrypted-transfer-',dir=os.environ['RUNNER_TEMP']))
+          def run(args,**kwargs):
+           try:result=subprocess.run(args,timeout=kwargs.pop('timeout',40),capture_output=True,**kwargs)
+           except subprocess.TimeoutExpired:raise RuntimeError('Bounded runner command timed out; sensitive arguments suppressed') from None
+           if result.returncode:
+            if args[0]=='gh':raise RuntimeError('GitHub command failed: '+result.stderr.decode())
+            raise RuntimeError('Runner command failed: '+args[0]+'; sensitive arguments suppressed')
+           return result
+          def api(path,method='GET',data=None,missing=False):
+           args=['gh','api',f'repos/{REPO}/'+path,'--method',method]
+           if data is not None:
+            request=work/'request.json';request.write_text(json.dumps(data));args+=['--input',str(request)]
+           result=subprocess.run(args,capture_output=True,text=True,timeout=25)
+           if result.returncode:
+            if missing and 'HTTP 404' in result.stderr:return None
+            raise RuntimeError('GitHub API failed: '+result.stderr)
+           return json.loads(result.stdout) if result.stdout.strip() else None
+          def draft():
+           release=api(f'releases/{RELEASE}')
+           if release['id']!=RELEASE or release['tag_name']!=APP_TAG or not release['draft']:raise RuntimeError('The existing release must remain unpublished')
+           return release
+          stage='starting';status_sha=None
+          status_branch='temporary/parent-reorder-touch-review-delivery-status-'+run_id+'-'+attempt
+          status_path='delivery-status.json'
+          def report(state, error=None):
+           global status_sha
+           record={'runId':run_id,'attempt':attempt,'state':state,'stage':stage,'signingMaterialUsed':False}
+           if error is not None:
+            record['errorType']=type(error).__name__;record['error']=str(error)[:1500]
+            record['frames']=[{'line':frame.lineno,'function':frame.name,'code':frame.line} for frame in traceback.extract_tb(error.__traceback__)[-4:]]
+           try:
+            if status_sha is None:api('git/refs','POST',{'ref':'refs/heads/'+status_branch,'sha':os.environ['GITHUB_SHA']})
+            request={'branch':status_branch,'message':'Record non-secret Play delivery stage: '+stage,'content':base64.b64encode((json.dumps(record,indent=2)+'\n').encode()).decode()}
+            if status_sha:request['sha']=status_sha
+            status_sha=api('contents/'+status_path,'PUT',request)['content']['sha']
+           except Exception: print('Status report could not be updated; original delivery checks remain enforced.',flush=True)
+          
+          try:
+           report('running')
+           draft()
+           # This is an ephemeral TRANSPORT decryption key, unrelated to APK/model signing keys.
+           private=work/'transport-private.pem';public=work/'transport-public.pem'
+           run(['openssl','genpkey','-algorithm','RSA','-pkeyopt','rsa_keygen_bits:3072','-out',str(private)])
+           run(['openssl','pkey','-in',str(private),'-pubout','-out',str(public)])
+           public_bytes=public.read_bytes();public_sha=hashlib.sha256(public_bytes).hexdigest()
+           api('git/refs','POST',{'ref':'refs/heads/'+branch,'sha':os.environ['GITHUB_SHA']})
+           api('contents/'+prefix+'/public-key.pem','PUT',{'branch':branch,'message':'Publish one-time transport public key for verified signed-app transfer','content':base64.b64encode(public_bytes).decode()})
+           stage='waiting_transfer';report('running')
+           print('Waiting for encrypted signed-app transfer on '+branch,flush=True)
+           print('One-time transport public-key SHA-256: '+public_sha,flush=True)
+           deadline=time.monotonic()+1800
+           while time.monotonic()<deadline:
+            ready=api('contents/'+prefix+'/ready.json?ref='+quote(branch,safe=''),missing=True)
+            if ready is not None:break
+            time.sleep(5)
+           else:raise TimeoutError('Bounded encrypted transfer handoff timed out')
+           head=api('git/ref/heads/'+branch)['object']['sha']
+           # Receive pinned public ciphertext directly, avoiding a large Git pack and checkout.
+           m=json.loads(base64.b64decode(ready['content']))
+           stage='receive_ciphertext';report('running')
+           assert m['runId']==run_id and m['attempt']==attempt and m['publicKeySha256']==public_sha
+           assert m['file']==NAME and m['bytes']==SIZE and m['sha256']==SHA
+           assert len(m['chunks'])==SPEC['chunks']
+           encrypted=work/'payload.enc';cipher_hash=hashlib.sha256();total=0
+           with encrypted.open('xb') as out:
+            for i,part in enumerate(m['chunks'],1):
+             assert part['file']==f'payload-{i:03}.enc'
+             assert isinstance(part['bytes'],int) and 0 < part['bytes'] <= 32*1024*1024
+             temporary=work/part['file']
+             address='https://raw.githubusercontent.com/'+REPO+'/'+head+'/'+prefix+'/'+part['file']
+             run(['curl','--fail','--location','--proto','=https','--proto-redir','=https','--max-time','90','--max-filesize','33554432','--output',str(temporary),address],timeout=95)
+             assert temporary.stat().st_size == part['bytes']
+             data=temporary.read_bytes()
+             assert len(data)==part['bytes'] and hashlib.sha256(data).hexdigest()==part['sha256']
+             out.write(data);cipher_hash.update(data);total+=len(data)
+           assert total==SIZE and cipher_hash.hexdigest()==m['ciphertextSha256']
+           stage='decrypt_and_verify';report('running')
+           envelope=work/'key-envelope.bin';material=work/'transport-material.bin'
+           envelope.write_bytes(base64.b64decode(m['wrappedKeyBase64'],validate=True))
+           run(['openssl','pkeyutl','-decrypt','-inkey',str(private),'-in',str(envelope),'-out',str(material),'-pkeyopt','rsa_padding_mode:oaep','-pkeyopt','rsa_oaep_md:sha256','-pkeyopt','rsa_mgf1_md:sha256'])
+           secret=material.read_bytes();assert len(secret)==48
+           pack=work/NAME
+           # Values remain in this subprocess; never print argv or secret material.
+           run(['openssl','enc','-aes-256-ctr','-d','-K',secret[:32].hex(),'-iv',secret[32:].hex(),'-in',str(encrypted),'-out',str(pack)],timeout=60)
+           assert pack.stat().st_size==SIZE
+           with pack.open('rb') as stream:assert hashlib.file_digest(stream,'sha256').hexdigest()==SHA
+           stage='verify_signed_files';report('running')
+           EXPECTED=SPEC['files']
+           uploads=work/'signed-files';uploads.mkdir()
+           with zipfile.ZipFile(pack) as archive:
+            assert len(archive.namelist())==len(set(archive.namelist())) and set(archive.namelist())==set(EXPECTED)
+            assert sum(item.file_size for item in archive.infolist()) < 2*1024*1024*1024
+            for name,entry in EXPECTED.items():
+             assert '/' not in name and '\\' not in name and archive.getinfo(name).file_size==entry['bytes']
+             digest=hashlib.sha256();total=0
+             with archive.open(name) as source,(uploads/name).open('xb') as out:
+              while data:=source.read(1024*1024):out.write(data);digest.update(data);total+=len(data)
+             assert total==entry['bytes'] and digest.hexdigest()==entry['sha256']
+           order=[name for name in EXPECTED if not name.endswith(('.aab','.apk'))]+[name for name in EXPECTED if name.endswith('.aab')]+[name for name in EXPECTED if name.endswith('.apk')]
+           results=[]
+           stage='upload_verified_assets';report('running')
+           for name in order:
+            path=uploads/name;entry=EXPECTED[name];release=draft()
+            assert {a['name'] for a in release['assets']} <= set(EXPECTED)|BASELINE
+            existing=next((a for a in release['assets'] if a['name']==name),None)
+            if existing is None:run(['gh','release','upload',APP_TAG,str(path),'--repo',REPO],timeout=180)
+            release=draft();asset=next(a for a in release['assets'] if a['name']==name)
+            assert asset['size']==entry['bytes']
+            if asset.get('digest'):assert asset['digest']=='sha256:'+entry['sha256']
+            else:
+             download=work/('recheck-'+name)
+             with download.open('xb') as out:
+              subprocess.run(['gh','api',f'repos/{REPO}/releases/assets/'+str(asset['id']),'-H','Accept: application/octet-stream'],stdout=out,stderr=subprocess.PIPE,check=True,timeout=180)
+             with download.open('rb') as stream:assert hashlib.file_digest(stream,'sha256').hexdigest()==entry['sha256']
+            results.append({'id':asset['id'],'name':name,'bytes':asset['size'],'sha256':entry['sha256'],'serverDigest':asset.get('digest')})
+           assert {a['name'] for a in draft()['assets']}==set(EXPECTED)|BASELINE
+           result={'releaseId':RELEASE,'htmlUrl':draft()['html_url'],'draft':True,'assets':results,'transferCommit':head,'privateSigningMaterialUsed':False,'storeUploadPerformed':False}
+           print(json.dumps(result,indent=2),flush=True)
+           with open(os.environ['GITHUB_STEP_SUMMARY'],'a') as summary:summary.write('## Verified signed app files and audits\n\nUnpublished owner download; no store upload.\n\n```json\n'+json.dumps(result,indent=2)+'\n```\n')
+           stage='complete';report('success')
+          except Exception as error:
+           report('failure',error)
+           raise
+          finally:
+           # Only disposable transport files are erased. Original model and signing keys never enter this runner.
+           shutil.rmtree(work)
+          PYRUNNER
