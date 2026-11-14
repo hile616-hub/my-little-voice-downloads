@@ -1,0 +1,18 @@
+{
+  "runId": "43640143353",
+  "attempt": "1",
+  "file": "reorder-touch-transfer.zip",
+  "bytes": 7326897,
+  "sha256": "1ec5f4c838874014cf3498cbb6ff6645d01fc1e4acf0ce0ea68b0cac5fc7fa4e",
+  "publicKeySha256": "0cb567ef1dd01ba27c6b365812f2ac7161520945695c61c83b7f423a10508ed3",
+  "encryption": "AES-256-CTR; key/IV wrapped with RSA-OAEP-SHA256; final plaintext hash pinned in workflow",
+  "wrappedKeyBase64": "MRKYNDSE5bdc5W1WrTmyaLLi3qL/Xfe38My8sgG4aQBJJd6pcrihV0j3KsOHgF0ZuIRn1Z9KcuuSoNvQ5ID8YBNsFioAjFBYsZrSdFJHPThKWy2EGnxwbbXjyuYpniYUvKHFuGGL6X4f48o5mh+HKLCqrNfwge2vqZvKTGDeOjSEXzxXQDvKcGR5IoyVz32z+ukiPuzxDMoeE/PkKJQN3pvS4gnap1ddJcIlouNQi/y0cJ2hG+Phr6zDQ8Yn00SSOUY2ZuQz2LMh8C6Mgxf5J4Rlp2bmd1m5D2P0mJLqs6D2HnmN4XzIB9BEYGdc7oCgGYAiJsFVXlfWQGg8zsOB7Y0UYs3CpKVMlYprKRDKpMmjffFWKutPxjOW3ME6jZOlENY3qMpJwGlfpEdLMVuA7gXarbs9w0girvuvRGjYouJgtDzlO1GJyUPFliQIhZkkHBPnYtjpdKFmTNulS1viMqJT8OsvPqr0oSCqp5YHRL1RaXuVXVpECxLbx9M6FyED",
+  "ciphertextSha256": "58abd153cbead396f210d475915f48e9e083d667e8380bf5e5dad83ee86e27df",
+  "chunks": [
+    {
+      "file": "payload-001.enc",
+      "bytes": 7326897,
+      "sha256": "58abd153cbead396f210d475915f48e9e083d667e8380bf5e5dad83ee86e27df"
+    }
+  ]
+}
