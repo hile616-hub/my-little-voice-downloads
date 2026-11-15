@@ -1,0 +1,18 @@
+{
+  "runId": "43668126136",
+  "attempt": "1",
+  "file": "prediction-transfer.zip",
+  "bytes": 1259811,
+  "sha256": "6c7bef31e23a8863077b0e387a0ab2cdb4d6241f8f3115523504c0c84f78ed8c",
+  "publicKeySha256": "236c243cf9c7fbae32365b03aef136f48cb68c1c4d08605deeecdb0a335aec11",
+  "encryption": "AES-256-CTR; key/IV wrapped with RSA-OAEP-SHA256; final plaintext hash pinned in workflow",
+  "wrappedKeyBase64": "WObsFF1R2zZXTZxxGExKRKT7GjIjpG+hnLCsYO28nBJAuPtSANkFzQH2lj7O16NfoN1mlqtHFuj0mtaCzFvLotNQja0GdCCB6NNYXVxVBRzrQGWLCby8GMxkk1qRc40FnWsQL8PvCyz2SLULub0uHLnIPr/QS0ENwmnIfuNdc61vAqiWsX2+Jx4EDwq80lTJCj9c2mTLd31+/lRsRL7H1K5Ha/liAtgpd3cuC0NmfCmO2GCS7KWSJHVX9AiaNskI92CjZWsgGFbvJL60wTR8aUp9OARy3FskzNKA4MVPMv/YY2bYuHwTZjmcfFAfJ8nek4CAUUf6xdn1e0htPKoEz85SudHQlX3ePWmr0cjExtftegfid4lh2LHtjdYaO7I+t5xT254AGEJE6MpsqCH8mrYCKGnIdT7jw9QnVuz4f6981GOa7HloV4KmyctYqYSnIjiNO6zpFL5r5txU0MUvX5+u9n9/wy6iPPZpKbiCfdtkcKqYqVgIgqzZR2W5BQWL",
+  "ciphertextSha256": "ff4eb30c7c04a6b5ae5d70b2551cf673ce512d1ac9d4795d4bc970b156346afa",
+  "chunks": [
+    {
+      "file": "payload-001.enc",
+      "bytes": 1259811,
+      "sha256": "ff4eb30c7c04a6b5ae5d70b2551cf673ce512d1ac9d4795d4bc970b156346afa"
+    }
+  ]
+}
