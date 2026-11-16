@@ -8,7 +8,7 @@ concurrency:
   cancel-in-progress: false
 jobs:
   upload:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     timeout-minutes: 45
     steps:
       - name: Receive encrypted signed AAB and verify draft attachments
