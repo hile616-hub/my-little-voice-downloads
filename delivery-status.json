@@ -1,7 +1,16 @@
 {
   "runId": "43904999532",
   "attempt": "1",
-  "state": "running",
+  "state": "failure",
   "stage": "waiting_transfer",
-  "signingMaterialUsed": false
+  "signingMaterialUsed": false,
+  "errorType": "TimeoutError",
+  "error": "Bounded encrypted transfer handoff timed out",
+  "frames": [
+    {
+      "line": 71,
+      "function": "<module>",
+      "code": ""
+    }
+  ]
 }
