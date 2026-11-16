@@ -1,0 +1,303 @@
+{
+  "runId": "43778029455",
+  "attempt": "1",
+  "file": "My-Little-Voice-Play-12-pr48-transfer.zip",
+  "bytes": 1921172606,
+  "sha256": "3aaaa3e9e1c5ca2ad9b56ac63a0af25b0037748d8bd9026300a54d63c12215ae",
+  "publicKeySha256": "8ee2f3ac365332e74046d67e12d27a290ac44ed8308801bcc4b6a4045c339cd1",
+  "encryption": "AES-256-CTR; key/IV wrapped with RSA-OAEP-SHA256; final plaintext hash pinned in workflow",
+  "wrappedKeyBase64": "NNRnuI+2Hxf5zgd70XpBsKdns6u0oYTfAHbx2W+gOpda4ii9xYBJOvx2pxBv5P4k2OCeH5J6nSr3dw3hGPM9iUFifKgXOXDsqp5QX2bqjPu3XlRwL3SrST1XXT2ERbUPnJ1U40XUtuK7UWHog1Rn6DcJlzduNiNxzmV2yKwh80WzpwPIwcD67ktFW1Cd5Q1Hy+FmlrP+sv0SexLAd05t9eDEdZJ2PUScJcHGrgZyx2iGbHA9L5rLfH/BzGD6REW1JmOUhOQHLi7HmFCuBs8KO5AR7dP79Dwqg2Isl4HZr22PNUf/hhsqg1tPae7o+yNWUZL3v4SuO2y67zavfOw5Xf5TdkRqMjot9RRnTibz7c4FnkgiJR2EnZjL6sK75xqncXTxlj4IElJshupv2Sd8kMriPUtUb7ofHPRvGFlGqgtMFUeWujZqAWrPuPQiPYos1Fm84RT0Nn3HgJLJ/rTo5JQlU8OHogyxbn6ovJdcmA45/n6mpZtPkJHcVtDaypZ5",
+  "ciphertextSha256": "b1e80306e632baec5639a2281863712d4145a2dda4839b87e1e0fc14ea9bc62f",
+  "chunks": [
+    {
+      "file": "payload-001.enc",
+      "bytes": 33554432,
+      "sha256": "e67c5be9564ad220d3ef54871d78970e560ca9ce72af04a40a548e387852c066"
+    },
+    {
+      "file": "payload-002.enc",
+      "bytes": 33554432,
+      "sha256": "16e7321162a877c326e4bfc53c3aeaf99ba09a2f66bf5d57e3d596fb64f4a73f"
+    },
+    {
+      "file": "payload-003.enc",
+      "bytes": 33554432,
+      "sha256": "5aa2d6fb710ac98ca1f622955d04f04d0af8c3a04816fe67a1419fcfedae4880"
+    },
+    {
+      "file": "payload-004.enc",
+      "bytes": 33554432,
+      "sha256": "18b5ca184341bd1f8fd08645662474a10f87ef59350bc108fedfcc02d85ec905"
+    },
+    {
+      "file": "payload-005.enc",
+      "bytes": 33554432,
+      "sha256": "9973343b729d5eab1c533b4baa6fb9ea2a1efddadc50f5e3dac4e3f6b6bda788"
+    },
+    {
+      "file": "payload-006.enc",
+      "bytes": 33554432,
+      "sha256": "9b178d84d67365de035e1840eefc7e05b03caa99f950de22bf664927dade5806"
+    },
+    {
+      "file": "payload-007.enc",
+      "bytes": 33554432,
+      "sha256": "ae1013a81bf173737aeceb09dec81e51558073d0022d40bc6ea3a3ec26151902"
+    },
+    {
+      "file": "payload-008.enc",
+      "bytes": 33554432,
+      "sha256": "5e8546363668fee3b11e37e4f8c02ccc556d3d5a5666019d3c8bdaa3b8b94ef0"
+    },
+    {
+      "file": "payload-009.enc",
+      "bytes": 33554432,
+      "sha256": "aea2a3971af6678edf621ca207fd31e7457fb5514231fd56059177ab0e00e568"
+    },
+    {
+      "file": "payload-010.enc",
+      "bytes": 33554432,
+      "sha256": "02ccb335f7c1e9e7ecd6fc18209b40d9dea02a70203da7891d087886f78369f6"
+    },
+    {
+      "file": "payload-011.enc",
+      "bytes": 33554432,
+      "sha256": "5175a3bae59da60bb830ec4c8171028a33c0eee48f3410068363a65e0314365c"
+    },
+    {
+      "file": "payload-012.enc",
+      "bytes": 33554432,
+      "sha256": "635ba2ee67466116f3e1dda860c547419d5dc0f1e71523f43dd0aa87211c7e32"
+    },
+    {
+      "file": "payload-013.enc",
+      "bytes": 33554432,
+      "sha256": "682c0e7dc3a553027048618f4826ad88edbee53fa1ed46a715aae1cd345d63e7"
+    },
+    {
+      "file": "payload-014.enc",
+      "bytes": 33554432,
+      "sha256": "7ef19023ae39cb42689300d60616d9c21e27f94b97e2134ea87fd5a5f0eab6be"
+    },
+    {
+      "file": "payload-015.enc",
+      "bytes": 33554432,
+      "sha256": "46d3aea4de717fb0b6045f1707efdcbdd7c846beb0a4cb94b1a63dd7aa3ad455"
+    },
+    {
+      "file": "payload-016.enc",
+      "bytes": 33554432,
+      "sha256": "f92a4764cad299e43486921690850a2970ec8ffe65fc8fcfbd4c7a1c12909d2c"
+    },
+    {
+      "file": "payload-017.enc",
+      "bytes": 33554432,
+      "sha256": "203e286c303173f8e1258d9d8a11d85dccd53840e88058525e52cb5e40e4fda7"
+    },
+    {
+      "file": "payload-018.enc",
+      "bytes": 33554432,
+      "sha256": "cc0ab660e7dc66d3a495d85577df451f20a72c26499b57846954d47ca79d1085"
+    },
+    {
+      "file": "payload-019.enc",
+      "bytes": 33554432,
+      "sha256": "9d5e42467f46168d671e72a7b03eca4173b6cdb81f9a108b62c2d90a562dcf30"
+    },
+    {
+      "file": "payload-020.enc",
+      "bytes": 33554432,
+      "sha256": "836183e9eba14427f87cc65ef0d698445d53b891a767b1465096a632a9ea489d"
+    },
+    {
+      "file": "payload-021.enc",
+      "bytes": 33554432,
+      "sha256": "db492f1f5975426ec78c014aead06a9c775a2dd685512b755a51622466e0ff14"
+    },
+    {
+      "file": "payload-022.enc",
+      "bytes": 33554432,
+      "sha256": "4cfaf912dfc45cedd31527afad920221fa83f2afc97d4b3e36e856de1c9599f4"
+    },
+    {
+      "file": "payload-023.enc",
+      "bytes": 33554432,
+      "sha256": "de962cceff724a3a418bc0e6da926ffbbe3c98a775947d3f00d1ff284545214e"
+    },
+    {
+      "file": "payload-024.enc",
+      "bytes": 33554432,
+      "sha256": "caa84215b5493a3a0631f0f8da807e831613902afa9798c4216fb3df1a64bde2"
+    },
+    {
+      "file": "payload-025.enc",
+      "bytes": 33554432,
+      "sha256": "9dbfd378db52c9b3b8f9a2c03bc1087b6fa3dd016857deccecba0bd5e296d070"
+    },
+    {
+      "file": "payload-026.enc",
+      "bytes": 33554432,
+      "sha256": "d41f40c42112b88f5e914a852c8836e706fcac32174099543508704e2d983017"
+    },
+    {
+      "file": "payload-027.enc",
+      "bytes": 33554432,
+      "sha256": "98f225bb54032f2434ebb2c4e29fb9ec01789f0e4c479cdc8d8637adefc6064e"
+    },
+    {
+      "file": "payload-028.enc",
+      "bytes": 33554432,
+      "sha256": "986e56e7844836699462fd1d0cd7117682c8de940d0b802d311235bd580e8821"
+    },
+    {
+      "file": "payload-029.enc",
+      "bytes": 33554432,
+      "sha256": "c4a104cd0e1b462489e3c5701ab3a781359ee968d9b9002003176fae1cd6b520"
+    },
+    {
+      "file": "payload-030.enc",
+      "bytes": 33554432,
+      "sha256": "30253859d3e144318ec3f77bfc418cfdc420a433c91856d20e2f485115bad8ba"
+    },
+    {
+      "file": "payload-031.enc",
+      "bytes": 33554432,
+      "sha256": "c083ed2a64839575225c6a42bfc97c53a9ced0107c10e631edbc9d416311eb03"
+    },
+    {
+      "file": "payload-032.enc",
+      "bytes": 33554432,
+      "sha256": "3612a687cfba3c5f0f9ea5ce66a4c74a490cdcfa62775fed829af8c1f5c74a52"
+    },
+    {
+      "file": "payload-033.enc",
+      "bytes": 33554432,
+      "sha256": "599253fde814ac255a861c21166bdb422d2e1c846c38e52031bf67632e270924"
+    },
+    {
+      "file": "payload-034.enc",
+      "bytes": 33554432,
+      "sha256": "7144dd051664270651d3f5afeb4c6714b9e62d15204aea6ad1876451d62ee2f3"
+    },
+    {
+      "file": "payload-035.enc",
+      "bytes": 33554432,
+      "sha256": "8ae1d039361cbb8854fe6d0b491dfc8a499c59bd01345eae280dd805d06cdf77"
+    },
+    {
+      "file": "payload-036.enc",
+      "bytes": 33554432,
+      "sha256": "f95643712ddf669a0203acb971c02799f0a6bb3e88fcf2631f8235f7c17c296f"
+    },
+    {
+      "file": "payload-037.enc",
+      "bytes": 33554432,
+      "sha256": "c9fc7112ca1d7761fba101ccc72c043d57be66f94f1eb982e0f29937cd5ef294"
+    },
+    {
+      "file": "payload-038.enc",
+      "bytes": 33554432,
+      "sha256": "5d2b134d2d18361059dab1a5de09102f5cd7a253e5589c9de94564406c868a29"
+    },
+    {
+      "file": "payload-039.enc",
+      "bytes": 33554432,
+      "sha256": "585cd17e74e9503981f20b8ac0989f4d9576aa83785399f99f5d937ab6788194"
+    },
+    {
+      "file": "payload-040.enc",
+      "bytes": 33554432,
+      "sha256": "fe4dc86a13919ec71c7dbcbefdb94080269b7e325a00e3ad5ba7a773800edc80"
+    },
+    {
+      "file": "payload-041.enc",
+      "bytes": 33554432,
+      "sha256": "5a45333b7a8b9571e3d240f3873edfb0f8f71d0bc1dff26472ead9eeab584969"
+    },
+    {
+      "file": "payload-042.enc",
+      "bytes": 33554432,
+      "sha256": "b86272861cfef1628aa4ec7f53e8112ca9df541e131c6e8a31b988526f0430ad"
+    },
+    {
+      "file": "payload-043.enc",
+      "bytes": 33554432,
+      "sha256": "e5de0fe3c05e296ff729d2a65eab525c00a3f25573281ed75f17130e414f6c68"
+    },
+    {
+      "file": "payload-044.enc",
+      "bytes": 33554432,
+      "sha256": "6618450067eeec1c74d14e05ff003c2657f219f85c1aa7759f3d706371393eed"
+    },
+    {
+      "file": "payload-045.enc",
+      "bytes": 33554432,
+      "sha256": "e73e3be8831e4e73dfa76c7f72dc9dd96a7541c75bcac4ab1ff65df7c99338ac"
+    },
+    {
+      "file": "payload-046.enc",
+      "bytes": 33554432,
+      "sha256": "c8a3d00d29e4e6f9278aeffedbe1e248cc2afab04c8582c793fd436e876634e2"
+    },
+    {
+      "file": "payload-047.enc",
+      "bytes": 33554432,
+      "sha256": "ff0693be4ba2c3dbf705b4a063799432486f9734d88dae6d70ba401860d7b49e"
+    },
+    {
+      "file": "payload-048.enc",
+      "bytes": 33554432,
+      "sha256": "0c26a37134da3878b5a9c2f27e1d7578b4669b195c3b32853a85c7a06b4e52b1"
+    },
+    {
+      "file": "payload-049.enc",
+      "bytes": 33554432,
+      "sha256": "d34fced136c6337ae840fd0c7c383df64eb0a822431e1685e138e2801f5d060c"
+    },
+    {
+      "file": "payload-050.enc",
+      "bytes": 33554432,
+      "sha256": "90e779e6eaa86f5d6c2ee0fc35a273dad5a7d8565fb4f6ffb476a1dbbbe47472"
+    },
+    {
+      "file": "payload-051.enc",
+      "bytes": 33554432,
+      "sha256": "c1c0f727dcf6d177d7090616689201baab20500c0287158a970b5335fd02ff5e"
+    },
+    {
+      "file": "payload-052.enc",
+      "bytes": 33554432,
+      "sha256": "2585592a1a3880d16c8fbd49c23d76d8fd2b7d9e0467234a76bbd677cc8dc112"
+    },
+    {
+      "file": "payload-053.enc",
+      "bytes": 33554432,
+      "sha256": "c921e5dc30c030ef40a1d7873b56b1352e276025551fa16c54d7eb5ffe9dcbfa"
+    },
+    {
+      "file": "payload-054.enc",
+      "bytes": 33554432,
+      "sha256": "59e98887964b744332440d091117eb21d54f1e5e764ab97708265e4e9c34bc71"
+    },
+    {
+      "file": "payload-055.enc",
+      "bytes": 33554432,
+      "sha256": "7d781f1fad2d7eabfee37c10668be1df47b398247fbc8515ed9bb3d982685f4d"
+    },
+    {
+      "file": "payload-056.enc",
+      "bytes": 33554432,
+      "sha256": "eb6e75de0a828b4db0faee71314407cadc64030c0a419f2418213680b04402a0"
+    },
+    {
+      "file": "payload-057.enc",
+      "bytes": 33554432,
+      "sha256": "6d3d2f6f797edb25197fd0d00bc6b12368339ee5d4979a59c2cb266827cf7437"
+    },
+    {
+      "file": "payload-058.enc",
+      "bytes": 8569982,
+      "sha256": "bfea10eab672805da9d8573dbbb44db92395063fe2552ae50f6854f416caed2a"
+    }
+  ]
+}
