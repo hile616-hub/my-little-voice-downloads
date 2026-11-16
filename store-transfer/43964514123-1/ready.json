@@ -1,0 +1,18 @@
+{
+  "runId": "43964514123",
+  "attempt": "1",
+  "file": "listing-device-transfer.zip",
+  "bytes": 5974651,
+  "sha256": "1ac516c7bc3bd6acf04df9b3f4fc8e58dc589648e4f6e0bf1dbcacb16324c6ae",
+  "publicKeySha256": "9049a43fc1a6f90ba7bddd90f57790b93a57d289e95f3c484142f96c902bccf6",
+  "encryption": "AES-256-CTR; key/IV wrapped with RSA-OAEP-SHA256; final plaintext hash pinned in workflow",
+  "wrappedKeyBase64": "JcRCDAhzav32IaCvRv2EyjHh0u8F3seGhQuhCO974aOE3zVor5QajHbr/5j4Hp5E2jY+8alXGdsMtyd8q0xJCRGthSKRaGkjRCrzhqt6egIoJZr4HXZpblWBAYVlBLRzu/VhFWGD5GsRqfPJyPCp/2Fmf4ajJvq3RCHskg5nOKNl/NySCTJIeAnOC87mrnIII0Q0efKISALvsWs1JVM/sK3gCZWGpsEGlQ4USin9Aqs4QfFVeVWYe1OsC5gUnOyetb7u3s5tQ8DoarRhgTZVpGRa8rwLW6XlLbtcc8c71W+ReMNlXh0n9mBMZBmgloDsI8m68jhhxFxSnL53tp+mTc3EfS4MXl+Rm9cI+5mxG9ISsZFZikq0dtF2zt7AyFHIJYI9Bz/KYEo/hbpxG4eoXWQIrc5R3R6EC2FtR28w0LuVzNsDtVvFLChZVQqoUdJMAeUK5zWwtrnOfLtjvr2ETRT8TyKHc7bk4DzKdndgHtBnDANTQqXAfjsvMMwfrUXN",
+  "ciphertextSha256": "d49b610fadfec896dfd0f6422bc5596c4f4694862554250ae823a809493eeab7",
+  "chunks": [
+    {
+      "file": "payload-001.enc",
+      "bytes": 5974651,
+      "sha256": "d49b610fadfec896dfd0f6422bc5596c4f4694862554250ae823a809493eeab7"
+    }
+  ]
+}
