@@ -1,7 +1,16 @@
 {
   "runId": "43959090232",
   "attempt": "1",
-  "state": "running",
+  "state": "failure",
   "stage": "decrypt_and_verify",
-  "signingMaterialUsed": false
+  "signingMaterialUsed": false,
+  "errorType": "AttributeError",
+  "error": "module 'hashlib' has no attribute 'file_digest'",
+  "frames": [
+    {
+      "line": 101,
+      "function": "<module>",
+      "code": ""
+    }
+  ]
 }
