@@ -1,0 +1,38 @@
+name: Check public website languages
+on:
+  push:
+    paths: ["app*.html", "privacy.html", "sitemap.xml", "website-assets/**", "scripts/check-public-site.mjs", ".github/workflows/check-public-site.yml"]
+  pull_request:
+    paths: ["app*.html", "privacy.html", "sitemap.xml", "website-assets/**", "scripts/check-public-site.mjs", ".github/workflows/check-public-site.yml"]
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: public-site-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  website:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24'
+      - name: Check all 25 guide and privacy languages in Chrome
+        run: node scripts/check-public-site.mjs . | tee "$RUNNER_TEMP/public-site-checks.log"
+      - name: Keep layout previews and check results
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: public-site-language-checks
+          retention-days: 7
+          path: |
+            review-hr-phone.png
+            review-hr-join.png
+            ${{ runner.temp }}/public-site-checks.log
