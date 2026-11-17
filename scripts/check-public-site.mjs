@@ -50,7 +50,7 @@ try{
       notice:document.querySelector("[data-language-availability]")?.textContent,
       uniqueIds:ids.length===new Set(ids).size};
     })()`);
-    check(info.lang===l.code,"language "+file);check(info.h1===1,"one heading "+file);
+    check(info.lang===(l.tag??l.code),"language "+file);check(info.h1===1,"one heading "+file);
     check(info.menu===25&&info.current===1,"language navigation "+file);check(info.alternate===26,"hreflang "+file);
     check(info.privacy.length>=2&&info.privacy.every(x=>x==="privacy.html#"+l.code),"privacy chapter "+file);
     check(info.anchors&&info.uniqueIds,"anchors "+file);check(info.images,"images load "+file);
