@@ -72,10 +72,12 @@ try{
   await command("Emulation.setDeviceMetricsOverride",{width:375,height:812,deviceScaleFactor:1,mobile:false});
   await navigate("privacy.html");
   check(await evaluate("document.querySelectorAll('article').length===" + privacyLocales.length + " && document.querySelectorAll('nav a').length===" + privacyLocales.length),"privacy language coverage");
+  check(await evaluate("document.querySelectorAll('nav[aria-label=\"Additional policy languages\"] a').length===4"),"four additional policy chapters are separate from the guide languages");
   for(const l of privacyLocales){
-    await evaluate("location.hash="+JSON.stringify(l.code));await pause(20);
-    const r=await evaluate(`(()=>{const a=document.getElementById(${JSON.stringify(l.code)});return {visible:getComputedStyle(a).display!=="none",lang:a.lang,headings:a.querySelectorAll("h2").length,contact:a.querySelector("address")?.textContent,paras:a.querySelectorAll("p").length,date:a.querySelector("time")?.dateTime,overflow:document.documentElement.scrollWidth>innerWidth+1};})()`);
+    await evaluate(`document.querySelector(${JSON.stringify('nav a[href="#'+l.code+'"]')}).click()`);await pause(20);
+    const r=await evaluate(`(()=>{const a=document.getElementById(${JSON.stringify(l.code)});return {visible:getComputedStyle(a).display!=="none",lang:a.lang,headings:a.querySelectorAll("h2").length,contact:a.querySelector("address")?.textContent,paras:a.querySelectorAll("p").length,date:a.querySelector("time")?.dateTime,overflow:document.documentElement.scrollWidth>innerWidth+1,links:[...a.querySelectorAll("a")].map(link=>link.href)};})()`);
     check(r.visible&&r.lang===(l.tag??l.code),"privacy target "+l.code);check(r.headings===7,"privacy topics "+l.code);check(r.contact.includes("helen_penjam@yahoo.com")&&r.contact.includes("+372 5816 6552"),"privacy contact "+l.code);check(r.paras>=14,"policy paragraphs "+l.code);check(r.date==="2026-11-16","policy effective date "+l.code);check(!r.overflow,"privacy layout "+l.code);
+    for (const url of ["https://policies.google.com/privacy","https://www.aki.ee/","https://hile616-hub.github.io/my-little-voice-downloads/privacy.html"]) check(r.links.includes(url),"privacy link "+l.code+" "+url);
   }
   await navigate("app-hr.html");
   const top=await command("Page.captureScreenshot",{format:"png"});await writeFile(join(root,"review-hr-phone.png"),Buffer.from(top.data,"base64"));
