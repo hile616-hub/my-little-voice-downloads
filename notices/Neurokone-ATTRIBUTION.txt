@@ -1,0 +1,21 @@
+Estonian speech: TartuNLP Neurokõne, University of Tartu, v1.1.0.
+Copyright (c) 2023 University of Tartu. Full permission and disclaimer: Neurokone-MIT.txt.
+Source revision: fa9ff5e6ed717edbca2f8ea85118b4ffcb0f7298
+https://github.com/TartuNLP/neurokone_app/tree/fa9ff5e6ed717edbca2f8ea85118b4ffcb0f7298
+Default mobile voice Mari is speaker 0, not the server or Piper speaker mapping.
+
+Modification record: FastSpeech2's two FlexRandomUniform nodes are lowered to built-in
+RANDOM_UNIFORM by scripts/lower-tts-random.py. All buffers, learned tensors, quantization,
+and input/output contracts are preserved. The paired hifigan-est.v2.tflite is unmodified.
+Originals are retained outside packaged assets in models/upstream. See the bundled
+voices/et-neurokone-v1/manifest.json for original/derived SHA-256 hashes and exact URLs.
+
+Native Processor.java is ported under MIT. Changes: package/class names, removal of
+private-text logging, explicit UTF-8/Locale.ROOT, API-24-compatible join, safe segmentation,
+unsupported-character/number limits, lone-digit and negative-sign guards, and preservation
+of words surrounding numeric ranges and zero currency quantities. No EstNLTK, Flutter runtime, Unidecode, speech-service
+app, system voice or network frontend is required. All text processing is local.
+
+The recording dataset's CC-BY-4.0 statement is separate from the published MIT grant for
+these model files and code. No dataset recordings are included. Generated review samples
+are not a phrase dictionary or application fallback. Voice quality requires listening review.
