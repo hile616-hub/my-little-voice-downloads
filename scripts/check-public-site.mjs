@@ -7,6 +7,7 @@ import { setTimeout as pause } from "node:timers/promises";
 import assert from "node:assert/strict";
 const root=resolve(process.argv[2]);
 const locales=[{"code":"en","name":"English"},{"code":"et","name":"Eesti"},{"code":"fi","name":"Suomi"},{"code":"ru","name":"???????"},{"code":"es","name":"Espa�ol"},{"code":"pt","name":"Portugu�s (Brasil)","tag":"pt-BR"},{"code":"fr","name":"Fran�ais"},{"code":"de","name":"Deutsch"},{"code":"it","name":"Italiano"},{"code":"lv","name":"Latviesu"},{"code":"hi","name":"??????"},{"code":"vi","name":"Ti?ng Vi?t"},{"code":"id","name":"Bahasa Indonesia"},{"code":"lt","name":"Lietuviu"},{"code":"tr","name":"T�rk�e"},{"code":"sv","name":"Svenska"},{"code":"hr","name":"Hrvatski"},{"code":"cs","name":"Cestina"},{"code":"da","name":"Dansk"},{"code":"nl","name":"Nederlands"},{"code":"hu","name":"Magyar"},{"code":"pl","name":"Polski"},{"code":"ro","name":"Rom�na"},{"code":"sk","name":"Slovencina"},{"code":"sl","name":"Slovenscina"}];
+const privacyLocales = [...locales, ...[{"code":"pt-PT","name":"Português (Portugal)"},{"code":"bg","name":"Български"},{"code":"uk","name":"Українська"},{"code":"el","name":"Ελληνικά"},{"code":"zh-Hans","name":"简体中文"},{"code":"ar","name":"العربية"},{"code":"ja","name":"日本語"},{"code":"ko","name":"한국어"}]];
 const server=createServer(async(req,res)=>{
   try{
     const file=resolve(root, "."+new URL(req.url,"http://localhost").pathname);
@@ -48,6 +49,8 @@ try{
       width:document.documentElement.scrollWidth,viewport:innerWidth,
       images:[...document.images].every(i=>i.complete&&i.naturalWidth>0),
       notice:document.querySelector("[data-language-availability]")?.textContent,
+      languages:document.querySelectorAll("[data-language-availability] .languages span").length,
+      credits:links.filter(a=>a.getAttribute("href").startsWith("voice-credits.html")).map(a=>a.getAttribute("href")),
       uniqueIds:ids.length===new Set(ids).size};
     })()`);
     check(info.lang===(l.tag??l.code),"language "+file);check(info.h1===1,"one heading "+file);
@@ -55,7 +58,8 @@ try{
     check(info.privacy.length>=2&&info.privacy.every(x=>x==="privacy.html#"+l.code),"privacy chapter "+file);
     check(info.anchors&&info.uniqueIds,"anchors "+file);check(info.images,"images load "+file);
     check(info.join.includes("https://groups.google.com/g/my-little-voice-testers")&&info.join.includes("https://play.google.com/apps/testing/org.mylittlevoice.aac")&&info.join.includes("https://play.google.com/store/apps/details?id=org.mylittlevoice.aac"),"testing links "+file);
-    check(info.notice.includes("25")&&info.notice.includes("16"),"availability disclosure "+file);
+    check(info.notice.includes("23")&&info.notice.includes("33")&&info.notice.includes("16")&&info.languages===33,"availability disclosure "+file);
+    check(info.credits.length===1&&info.credits[0]==="voice-credits.html#"+l.code,"voice credits link "+file);
     check(info.width<=info.viewport+1,"mobile overflow "+file+" "+JSON.stringify(info));
     if(["hr","cs","da","nl","hu","pl","ro","sk","sl","de"].includes(l.code)){
       for(const width of [320,768,1280]){
@@ -70,17 +74,23 @@ try{
   }
   await command("Emulation.setDeviceMetricsOverride",{width:375,height:812,deviceScaleFactor:1,mobile:false});
   await navigate("privacy.html");
-  check(await evaluate("document.querySelectorAll('article').length===25 && document.querySelectorAll('nav a').length===25"),"25 privacy languages");
-  for(const l of locales){
-    await evaluate("location.hash="+JSON.stringify(l.code));await pause(20);
-    const r=await evaluate(`(()=>{const a=document.getElementById(${JSON.stringify(l.code)});return {visible:getComputedStyle(a).display!=="none",lang:a.lang,headings:a.querySelectorAll("h2").length,contact:a.querySelector("address")?.textContent,paras:a.querySelectorAll("p").length,date:a.querySelector("time")?.dateTime,overflow:document.documentElement.scrollWidth>innerWidth+1};})()`);
+  check(await evaluate("document.querySelectorAll('article').length===" + privacyLocales.length + " && document.querySelectorAll('nav a').length===" + privacyLocales.length),"privacy language coverage");
+  for(const l of privacyLocales){
+    await evaluate(`document.querySelector(${JSON.stringify('nav a[href="#'+l.code+'"]')}).click()`);await pause(20);
+    const r=await evaluate(`(()=>{const a=document.getElementById(${JSON.stringify(l.code)});return {visible:getComputedStyle(a).display!=="none",lang:a.lang,headings:a.querySelectorAll("h2").length,contact:a.querySelector("address")?.textContent,paras:a.querySelectorAll("p").length,date:a.querySelector("time")?.dateTime,overflow:document.documentElement.scrollWidth>innerWidth+1,links:[...a.querySelectorAll("a")].map(link=>link.href)};})()`);
     check(r.visible&&r.lang===(l.tag??l.code),"privacy target "+l.code);check(r.headings===7,"privacy topics "+l.code);check(r.contact.includes("helen_penjam@yahoo.com")&&r.contact.includes("+372 5816 6552"),"privacy contact "+l.code);check(r.paras>=14,"policy paragraphs "+l.code);check(r.date==="2026-11-16","policy effective date "+l.code);check(!r.overflow,"privacy layout "+l.code);
+    for (const url of ["https://policies.google.com/privacy","https://www.aki.ee/","https://hile616-hub.github.io/my-little-voice-downloads/privacy.html"]) check(r.links.includes(url),"privacy link "+l.code+" "+url);
+  }
+  await navigate("voice-credits.html");
+  check(await evaluate("document.querySelectorAll('article').length === 33"), "voice credits cover all 33 policy languages");
+  for (const l of privacyLocales) {
+    await evaluate(`document.querySelector(${JSON.stringify('nav a[href="#'+l.code+'"]')}).click()`);
+    const visible = await evaluate(`(()=>{const a=document.getElementById(${JSON.stringify(l.code)});return a && a.lang===${JSON.stringify(l.tag??l.code)} && getComputedStyle(a).display!=="none" && a.querySelectorAll("h2").length>=4 && document.documentElement.scrollWidth<=innerWidth+1;})()`);
+    check(visible,"voice credits chapter "+l.code);
   }
   await navigate("app-hr.html");
   const top=await command("Page.captureScreenshot",{format:"png"});await writeFile(join(root,"review-hr-phone.png"),Buffer.from(top.data,"base64"));
   await evaluate("document.getElementById('join').scrollIntoView()");
   const joinShot=await command("Page.captureScreenshot",{format:"png"});await writeFile(join(root,"review-hr-join.png"),Buffer.from(joinShot.data,"base64"));
-  console.log(JSON.stringify({passed:true,assertions,pages:25,privacyLanguages:25,widths:[320,375,768,1280]}));
+  console.log(JSON.stringify({passed:true,assertions,pages:25,privacyLanguages:privacyLocales.length,widths:[320,375,768,1280]}));
 }finally{ws?.close();chrome.kill();await new Promise(r=>server.close(r));}
-
-
