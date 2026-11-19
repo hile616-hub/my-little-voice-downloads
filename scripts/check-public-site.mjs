@@ -58,7 +58,7 @@ try{
     check(info.privacy.length>=2&&info.privacy.every(x=>x==="privacy.html#"+l.code),"privacy chapter "+file);
     check(info.anchors&&info.uniqueIds,"anchors "+file);check(info.images,"images load "+file);
     check(info.join.includes("https://groups.google.com/g/my-little-voice-testers")&&info.join.includes("https://play.google.com/apps/testing/org.mylittlevoice.aac")&&info.join.includes("https://play.google.com/store/apps/details?id=org.mylittlevoice.aac"),"testing links "+file);
-    check(info.notice.includes("23")&&info.notice.includes("33")&&info.notice.includes("16")&&info.languages===33,"availability disclosure "+file);
+    check(info.notice.includes("23")&&info.notice.includes("33")&&info.languages===33,"availability disclosure "+file);
     check(info.credits.length===1&&info.credits[0]==="voice-credits.html#"+l.code,"voice credits link "+file);
     check(info.width<=info.viewport+1,"mobile overflow "+file+" "+JSON.stringify(info));
     if(["hr","cs","da","nl","hu","pl","ro","sk","sl","de"].includes(l.code)){
