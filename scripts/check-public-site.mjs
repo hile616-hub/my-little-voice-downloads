@@ -13,7 +13,7 @@ const server=createServer(async(req,res)=>{
     const file=resolve(root, "."+new URL(req.url,"http://localhost").pathname);
     if(!file.startsWith(root+"\\")&&!file.startsWith(root+"/"))throw Error("path");
     const bytes=await readFile(file);
-    res.setHeader("Content-Type",({".html":"text/html; charset=utf-8",".png":"image/png",".xml":"application/xml"})[extname(file)]??"text/plain; charset=utf-8");res.end(bytes);
+    res.setHeader("Content-Type",({".html":"text/html; charset=utf-8",".png":"image/png",".xml":"application/xml",".js":"text/javascript; charset=utf-8"})[extname(file)]??"text/plain; charset=utf-8");res.end(bytes);
   }catch{res.writeHead(404);res.end("Not found");}
 });
 await new Promise(r=>server.listen(0,"127.0.0.1",r));
@@ -81,12 +81,48 @@ try{
     check(r.visible&&r.lang===(l.tag??l.code),"privacy target "+l.code);check(r.headings===7,"privacy topics "+l.code);check(r.contact.includes("helen_penjam@yahoo.com")&&r.contact.includes("+372 5816 6552"),"privacy contact "+l.code);check(r.paras>=14,"policy paragraphs "+l.code);check(r.ageSignals===1,"Internal Testing age signals disclosure "+l.code);check(r.date==="2026-11-21","policy effective date "+l.code);check(!r.overflow,"privacy layout "+l.code);
     for (const url of ["https://policies.google.com/privacy","https://www.aki.ee/","https://hile616-hub.github.io/my-little-voice-downloads/privacy.html"]) check(r.links.includes(url),"privacy link "+l.code+" "+url);
   }
-  await navigate("voice-credits.html");
-  check(await evaluate("document.querySelectorAll('article').length === 33"), "voice credits cover all 33 policy languages");
-  for (const l of privacyLocales) {
-    await evaluate(`document.querySelector(${JSON.stringify('nav a[href="#'+l.code+'"]')}).click()`);
-    const visible = await evaluate(`(()=>{const a=document.getElementById(${JSON.stringify(l.code)});return a && a.lang===${JSON.stringify(l.tag??l.code)} && getComputedStyle(a).display!=="none" && a.querySelectorAll("h2").length>=4 && document.documentElement.scrollWidth<=innerWidth+1;})()`);
-    check(visible,"voice credits chapter "+l.code);
+  const chooseDocumentLanguage = async (code) => {
+    await evaluate(`(() => {
+      const picker = document.getElementById("document-language");
+      picker.value = ${JSON.stringify(code)};
+      picker.dispatchEvent(new Event("change", { bubbles: true }));
+    })()`);
+  };
+  for (const page of ["voice-credits.html"]) {
+    await navigate(page + "#ar");
+    check(await evaluate(`(() => {
+      const picker = document.getElementById("document-language");
+      return !picker.closest(".language-picker").hidden && picker.options.length === ${privacyLocales.length}
+        && picker.value === "ar" && document.documentElement.lang === "ar"
+        && document.getElementById("ar").dir === "rtl" && !document.getElementById("ar").hidden
+        && document.querySelectorAll("article").length === ${privacyLocales.length}
+        && document.querySelectorAll("a, area").length === 0;
+    })()`), "language coverage, Arabic deep link, and no clickable links on " + page);
+    for (const locale of privacyLocales) {
+      await chooseDocumentLanguage(locale.code);
+      const chapter = await evaluate(`(() => {
+        const a = document.getElementById(${JSON.stringify(locale.code)});
+        return {
+          visible: !a.hidden && document.querySelectorAll("article:not([hidden])").length === 1,
+          lang: a.lang,
+          selected: document.documentElement.lang === a.lang && location.hash === "#" + a.id,
+          headings: a.querySelectorAll("h2").length,
+          overflow: document.documentElement.scrollWidth > innerWidth + 1,
+          text: a.textContent,
+        };
+      })()`);
+      check(chapter.visible && chapter.selected && chapter.lang === (locale.tag ?? locale.code), page + "#" + locale.code);
+      check(!chapter.overflow, "document layout " + page + "#" + locale.code);
+      check(chapter.headings >= 4 && !chapter.text.includes("github.com/"), "voice credits " + locale.code);
+    }
+  }
+  const notices = await evaluate(`[...document.querySelectorAll("details pre[data-notice]")].map(
+    (notice) => [notice.dataset.notice, notice.textContent]
+  )`);
+  check(notices.length === 7 && new Set(notices.map(([filename]) => filename)).size === 7, "original licence notices available");
+  for (const [filename, content] of notices) {
+    const original = (await readFile(join(root, "notices", filename), "utf8")).replace(/\r\n/g, "\n");
+    check(content === original, "verbatim original notice " + filename);
   }
   await navigate("app-hr.html");
   const top=await command("Page.captureScreenshot",{format:"png"});await writeFile(join(root,"review-hr-phone.png"),Buffer.from(top.data,"base64"));
