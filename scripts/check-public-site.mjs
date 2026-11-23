@@ -73,14 +73,6 @@ try{
     }
   }
   await command("Emulation.setDeviceMetricsOverride",{width:375,height:812,deviceScaleFactor:1,mobile:false});
-  await navigate("privacy.html");
-  check(await evaluate("document.querySelectorAll('article').length===" + privacyLocales.length + " && document.querySelectorAll('nav a').length===" + privacyLocales.length),"privacy language coverage");
-  for(const l of privacyLocales){
-    await evaluate(`document.querySelector(${JSON.stringify('nav a[href="#'+l.code+'"]')}).click()`);await pause(20);
-    const r=await evaluate(`(()=>{const a=document.getElementById(${JSON.stringify(l.code)});return {visible:getComputedStyle(a).display!=="none",lang:a.lang,headings:a.querySelectorAll("h2").length,ageSignals:a.querySelectorAll("[data-play-age-signals]").length,contact:a.querySelector("address")?.textContent,paras:a.querySelectorAll("p").length,date:a.querySelector("time")?.dateTime,overflow:document.documentElement.scrollWidth>innerWidth+1,links:[...a.querySelectorAll("a")].map(link=>link.href)};})()`);
-    check(r.visible&&r.lang===(l.tag??l.code),"privacy target "+l.code);check(r.headings===7,"privacy topics "+l.code);check(r.contact.includes("helen_penjam@yahoo.com")&&r.contact.includes("+372 5816 6552"),"privacy contact "+l.code);check(r.paras>=14,"policy paragraphs "+l.code);check(r.ageSignals===1,"Internal Testing age signals disclosure "+l.code);check(r.date==="2026-11-21","policy effective date "+l.code);check(!r.overflow,"privacy layout "+l.code);
-    for (const url of ["https://policies.google.com/privacy","https://www.aki.ee/","https://hile616-hub.github.io/my-little-voice-downloads/privacy.html"]) check(r.links.includes(url),"privacy link "+l.code+" "+url);
-  }
   const chooseDocumentLanguage = async (code) => {
     await evaluate(`(() => {
       const picker = document.getElementById("document-language");
@@ -88,7 +80,7 @@ try{
       picker.dispatchEvent(new Event("change", { bubbles: true }));
     })()`);
   };
-  for (const page of ["voice-credits.html"]) {
+  for (const page of ["privacy.html", "voice-credits.html"]) {
     await navigate(page + "#ar");
     check(await evaluate(`(() => {
       const picker = document.getElementById("document-language");
@@ -107,13 +99,26 @@ try{
           lang: a.lang,
           selected: document.documentElement.lang === a.lang && location.hash === "#" + a.id,
           headings: a.querySelectorAll("h2").length,
+          ageSignals: a.querySelectorAll("[data-play-age-signals]").length,
+          contact: a.querySelector("address")?.textContent,
+          paragraphs: a.querySelectorAll("p").length,
+          date: a.querySelector("time")?.dateTime,
           overflow: document.documentElement.scrollWidth > innerWidth + 1,
           text: a.textContent,
         };
       })()`);
       check(chapter.visible && chapter.selected && chapter.lang === (locale.tag ?? locale.code), page + "#" + locale.code);
       check(!chapter.overflow, "document layout " + page + "#" + locale.code);
-      check(chapter.headings >= 4 && !chapter.text.includes("github.com/"), "voice credits " + locale.code);
+      if (page === "privacy.html") {
+        check(chapter.headings === 7 && chapter.paragraphs >= 14, "privacy topics " + locale.code);
+        check(chapter.contact.includes("helen_penjam@yahoo.com") && chapter.contact.includes("+372 5816 6552"), "privacy contact " + locale.code);
+        check(chapter.ageSignals === 1 && chapter.date === "2026-11-21", "policy disclosure and date " + locale.code);
+        for (const address of ["https://policies.google.com/privacy", "https://www.aki.ee", "https://hile616-hub.github.io/my-little-voice-downloads/privacy.html"]) {
+          check(chapter.text.includes(address), "plain privacy address " + locale.code + " " + address);
+        }
+      } else {
+        check(chapter.headings >= 4 && !chapter.text.includes("github.com/"), "voice credits " + locale.code);
+      }
     }
   }
   const notices = await evaluate(`[...document.querySelectorAll("details pre[data-notice]")].map(
