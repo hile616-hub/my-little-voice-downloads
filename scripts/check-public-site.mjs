@@ -7,7 +7,9 @@ import { setTimeout as pause } from "node:timers/promises";
 import assert from "node:assert/strict";
 const root=resolve(process.argv[2]);
 const locales=[{"code":"en","name":"English"},{"code":"et","name":"Eesti"},{"code":"fi","name":"Suomi"},{"code":"ru","name":"???????"},{"code":"es","name":"Espa�ol"},{"code":"pt","name":"Portugu�s (Brasil)","tag":"pt-BR"},{"code":"fr","name":"Fran�ais"},{"code":"de","name":"Deutsch"},{"code":"it","name":"Italiano"},{"code":"lv","name":"Latviesu"},{"code":"hi","name":"??????"},{"code":"vi","name":"Ti?ng Vi?t"},{"code":"id","name":"Bahasa Indonesia"},{"code":"lt","name":"Lietuviu"},{"code":"tr","name":"T�rk�e"},{"code":"sv","name":"Svenska"},{"code":"hr","name":"Hrvatski"},{"code":"cs","name":"Cestina"},{"code":"da","name":"Dansk"},{"code":"nl","name":"Nederlands"},{"code":"hu","name":"Magyar"},{"code":"pl","name":"Polski"},{"code":"ro","name":"Rom�na"},{"code":"sk","name":"Slovencina"},{"code":"sl","name":"Slovenscina"}];
-const privacyLocales = [...locales, ...[{"code":"pt-PT","name":"Português (Portugal)"},{"code":"bg","name":"Български"},{"code":"uk","name":"Українська"},{"code":"el","name":"Ελληνικά"},{"code":"zh-Hans","name":"简体中文"},{"code":"ar","name":"العربية"},{"code":"ja","name":"日本語"},{"code":"ko","name":"한국어"}]];
+const guideLocales = [...locales, ...[{"code":"pt-PT","name":"Português (Portugal)"},{"code":"bg","name":"Български"},{"code":"uk","name":"Українська"},{"code":"el","name":"Ελληνικά"},{"code":"zh-Hans","name":"简体中文"},{"code":"ar","name":"العربية"},{"code":"ja","name":"日本語"},{"code":"ko","name":"한국어"}]];
+const privacyLocales = guideLocales;
+const guideFile = (code) => code === "en" ? "app.html" : "app-" + code.toLowerCase() + ".html";
 const server=createServer(async(req,res)=>{
   try{
     const file=resolve(root, "."+new URL(req.url,"http://localhost").pathname);
@@ -33,8 +35,8 @@ try{
   const evaluate=async(expression)=>{const r=await command("Runtime.evaluate",{expression,returnByValue:true,awaitPromise:true});if(r.exceptionDetails)throw Error(r.exceptionDetails.exception?.description??r.exceptionDetails.text);return r.result.value;};
   await command("Page.enable");await command("Runtime.enable");
   async function navigate(path){await command("Page.navigate",{url:base+"/"+path});for(let i=0;i<100;i++){if(await evaluate("document.readyState==='complete' && location.href==="+JSON.stringify(base+"/"+path)))return;await pause(50);}throw Error("load timeout "+path);}
-  for(const l of locales){
-    const file=l.code==="en"?"app.html":"app-"+l.code+".html";
+  for(const l of guideLocales){
+    const file=guideFile(l.code);
     await command("Emulation.setDeviceMetricsOverride",{width:375,height:812,deviceScaleFactor:1,mobile:false});
     await navigate(file);
     const info=await evaluate(`(()=>{
@@ -42,7 +44,11 @@ try{
       const ids=[...document.querySelectorAll("[id]")].map(x=>x.id);
       return {lang:document.documentElement.lang,h1:document.querySelectorAll("h1").length,
       menu:document.querySelectorAll(".language-options a").length,current:document.querySelectorAll(".language-options a[aria-current]").length,
-      alternate:document.querySelectorAll('link[rel="alternate"]').length,
+      alternate:[...document.querySelectorAll('link[rel="alternate"]')].map(a=>[a.hreflang, a.getAttribute("href").split("/").at(-1)]),
+      languageOptions:[...document.querySelectorAll(".language-options a")].map(a=>[a.hreflang, a.getAttribute("href")]),
+      selected:document.querySelector(".language-options a[aria-current]")?.getAttribute("href"),
+      direction:getComputedStyle(document.documentElement).direction,
+      canonical:document.querySelector('link[rel="canonical"]').href.split("/").at(-1),
       privacy:links.filter(a=>a.getAttribute("href").startsWith("privacy.html")).map(a=>a.getAttribute("href")),
       anchors:links.filter(a=>a.getAttribute("href").startsWith("#")).every(a=>document.getElementById(a.hash.slice(1))),
       join:links.filter(a=>a.closest("#join")).map(a=>a.href),
@@ -54,20 +60,24 @@ try{
       uniqueIds:ids.length===new Set(ids).size};
     })()`);
     check(info.lang===(l.tag??l.code),"language "+file);check(info.h1===1,"one heading "+file);
-    check(info.menu===25&&info.current===1,"language navigation "+file);check(info.alternate===26,"hreflang "+file);
+    const routes = guideLocales.map(locale => [locale.tag ?? locale.code, guideFile(locale.code)]);
+    check(info.menu===guideLocales.length&&info.current===1&&info.selected===file,"language navigation "+file);
+    check(JSON.stringify(info.languageOptions)===JSON.stringify(routes),"language menu routes "+file);
+    check(JSON.stringify(info.alternate)===JSON.stringify([...routes, ["x-default", "app.html"]])&&info.canonical===file,"hreflang and canonical "+file);
+    check(info.direction===(l.code==="ar"?"rtl":"ltr"),"reading direction "+file);
     check(info.privacy.length>=2&&info.privacy.every(x=>x==="privacy.html#"+l.code),"privacy chapter "+file);
     check(info.anchors&&info.uniqueIds,"anchors "+file);check(info.images,"images load "+file);
     check(info.join.includes("https://groups.google.com/g/my-little-voice-testers")&&info.join.includes("https://play.google.com/apps/testing/org.mylittlevoice.aac")&&info.join.includes("https://play.google.com/store/apps/details?id=org.mylittlevoice.aac"),"testing links "+file);
     check(info.notice.match(/\d+/g)?.join(",")==="33"&&info.languages===33,"availability disclosure "+file);
     check(info.credits.length===1&&info.credits[0]==="voice-credits.html#"+l.code,"voice credits link "+file);
     check(info.width<=info.viewport+1,"mobile overflow "+file+" "+JSON.stringify(info));
-    if(["hr","cs","da","nl","hu","pl","ro","sk","sl","de"].includes(l.code)){
+    if(!locales.includes(l)||["hr","cs","da","nl","hu","pl","ro","sk","sl","de"].includes(l.code)){
       for(const width of [320,768,1280]){
         await command("Emulation.setDeviceMetricsOverride",{width,height:900,deviceScaleFactor:1,mobile:false});
         await pause(20);
         check(await evaluate("document.documentElement.scrollWidth<=innerWidth+1"),"layout "+file+" at "+width);
         await evaluate("document.querySelector('.language-menu').open=true");
-        check(await evaluate("document.documentElement.scrollWidth<=innerWidth+1 && document.querySelector('.language-options').getBoundingClientRect().left>=-1"),"menu layout "+file+" at "+width);
+        check(await evaluate("document.documentElement.scrollWidth<=innerWidth+1 && document.querySelector('.language-options').getBoundingClientRect().left>=-1 && document.querySelector('.language-options').getBoundingClientRect().right<=innerWidth+1"),"menu layout "+file+" at "+width);
         await evaluate("document.querySelector('.language-menu').open=false");
       }
     }
@@ -133,5 +143,5 @@ try{
   const top=await command("Page.captureScreenshot",{format:"png"});await writeFile(join(root,"review-hr-phone.png"),Buffer.from(top.data,"base64"));
   await evaluate("document.getElementById('join').scrollIntoView()");
   const joinShot=await command("Page.captureScreenshot",{format:"png"});await writeFile(join(root,"review-hr-join.png"),Buffer.from(joinShot.data,"base64"));
-  console.log(JSON.stringify({passed:true,assertions,pages:25,privacyLanguages:privacyLocales.length,widths:[320,375,768,1280]}));
+  console.log(JSON.stringify({passed:true,assertions,pages:guideLocales.length,privacyLanguages:privacyLocales.length,widths:[320,375,768,1280]}));
 }finally{ws?.close();chrome.kill();await new Promise(r=>server.close(r));}
