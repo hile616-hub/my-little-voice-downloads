@@ -40,23 +40,24 @@ try{
     await command("Emulation.setDeviceMetricsOverride",{width:375,height:812,deviceScaleFactor:1,mobile:false});
     await navigate(file);
     const info=await evaluate(`(()=>{
-      const links=[...document.querySelectorAll("a")];
+      const controls=[...document.querySelectorAll("button[data-site-target]")];
       const ids=[...document.querySelectorAll("[id]")].map(x=>x.id);
       return {lang:document.documentElement.lang,h1:document.querySelectorAll("h1").length,
-      menu:document.querySelectorAll(".language-options a").length,current:document.querySelectorAll(".language-options a[aria-current]").length,
+      menu:document.querySelectorAll(".language-options button").length,current:document.querySelectorAll(".language-options button[aria-current]").length,
       alternate:[...document.querySelectorAll('link[rel="alternate"]')].map(a=>[a.hreflang, a.getAttribute("href").split("/").at(-1)]),
-      languageOptions:[...document.querySelectorAll(".language-options a")].map(a=>[a.hreflang, a.getAttribute("href")]),
-      selected:document.querySelector(".language-options a[aria-current]")?.getAttribute("href"),
+      languageOptions:[...document.querySelectorAll(".language-options button")].map(a=>[a.lang, a.dataset.siteTarget]),
+      selected:document.querySelector(".language-options button[aria-current]")?.dataset.siteTarget,
       direction:getComputedStyle(document.documentElement).direction,
       canonical:document.querySelector('link[rel="canonical"]').href.split("/").at(-1),
-      privacy:links.filter(a=>a.getAttribute("href").startsWith("privacy.html")).map(a=>a.getAttribute("href")),
-      anchors:links.filter(a=>a.getAttribute("href").startsWith("#")).every(a=>document.getElementById(a.hash.slice(1))),
-      join:links.filter(a=>a.closest("#join")).map(a=>a.href),
+      privacy:controls.filter(a=>a.dataset.siteTarget.startsWith("privacy.html")).map(a=>a.dataset.siteTarget),
+      sections:controls.filter(a=>a.dataset.siteTarget.startsWith("#")).every(a=>document.getElementById(a.dataset.siteTarget.slice(1))),
+      links:[...document.querySelectorAll("a, area")].map(a=>[a.getAttribute("href"), !!a.closest("#join")]),
+      localTargets:controls.every(a=>!a.dataset.siteTarget.includes(":")&&!a.dataset.siteTarget.includes("/")),
       width:document.documentElement.scrollWidth,viewport:innerWidth,
       images:[...document.images].every(i=>i.complete&&i.naturalWidth>0),
       notice:document.querySelector("[data-language-availability]")?.textContent,
       languages:document.querySelectorAll("[data-language-availability] .languages span").length,
-      credits:links.filter(a=>a.getAttribute("href").startsWith("voice-credits.html")).map(a=>a.getAttribute("href")),
+      credits:controls.filter(a=>a.dataset.siteTarget.startsWith("voice-credits.html")).map(a=>a.dataset.siteTarget),
       uniqueIds:ids.length===new Set(ids).size};
     })()`);
     check(info.lang===(l.tag??l.code),"language "+file);check(info.h1===1,"one heading "+file);
@@ -66,10 +67,16 @@ try{
     check(JSON.stringify(info.alternate)===JSON.stringify([...routes, ["x-default", "app.html"]])&&info.canonical===file,"hreflang and canonical "+file);
     check(info.direction===(l.code==="ar"?"rtl":"ltr"),"reading direction "+file);
     check(info.privacy.length>=2&&info.privacy.every(x=>x==="privacy.html#"+l.code),"privacy chapter "+file);
-    check(info.anchors&&info.uniqueIds,"anchors "+file);check(info.images,"images load "+file);
-    check(info.join.includes("https://groups.google.com/g/my-little-voice-testers")&&info.join.includes("https://play.google.com/apps/testing/org.mylittlevoice.aac")&&info.join.includes("https://play.google.com/store/apps/details?id=org.mylittlevoice.aac"),"testing links "+file);
+    check(info.sections&&info.uniqueIds,"local section targets "+file);
+    const testerLinks = [
+      "https://groups.google.com/g/my-little-voice-testers",
+      "https://play.google.com/apps/testing/org.mylittlevoice.aac",
+      "https://play.google.com/store/apps/details?id=org.mylittlevoice.aac",
+    ];
+    check(info.localTargets,"local navigation controls "+file);check(info.images,"images load "+file);
+    check(JSON.stringify(info.links)===JSON.stringify(testerLinks.map(url=>[url,true])),"only approved clickable testing links "+file);
     check(info.notice.match(/\d+/g)?.join(",")==="33"&&info.languages===33,"availability disclosure "+file);
-    check(info.credits.length===1&&info.credits[0]==="voice-credits.html#"+l.code,"voice credits link "+file);
+    check(info.credits.length===1&&info.credits[0]==="voice-credits.html#"+l.code,"voice credits control "+file);
     check(info.width<=info.viewport+1,"mobile overflow "+file+" "+JSON.stringify(info));
     if(!locales.includes(l)||["hr","cs","da","nl","hu","pl","ro","sk","sl","de"].includes(l.code)){
       for(const width of [320,768,1280]){
@@ -122,7 +129,7 @@ try{
       if (page === "privacy.html") {
         check(chapter.headings === 7 && chapter.paragraphs >= 14, "privacy topics " + locale.code);
         check(chapter.contact.includes("helen_penjam@yahoo.com") && chapter.contact.includes("+372 5816 6552"), "privacy contact " + locale.code);
-        check(chapter.ageSignals === 1 && chapter.date === "2026-11-21", "policy disclosure and date " + locale.code);
+        check(chapter.ageSignals === 1 && chapter.date === "2026-11-24", "policy disclosure and date " + locale.code);
         for (const address of ["https://policies.google.com/privacy", "https://www.aki.ee", "https://hile616-hub.github.io/my-little-voice-downloads/privacy.html"]) {
           check(chapter.text.includes(address), "plain privacy address " + locale.code + " " + address);
         }
@@ -139,6 +146,17 @@ try{
     const original = (await readFile(join(root, "notices", filename), "utf8")).replace(/\r\n/g, "\n");
     check(content === original, "verbatim original notice " + filename);
   }
+  await navigate("index.html");
+  check(await evaluate('!document.querySelector("a, area")'), "no hyperlinks on the home page");
+  await evaluate(`document.querySelector('button[data-site-target="privacy.html"]').click()`);
+  for (let i=0; i<100 && !await evaluate('location.pathname.endsWith("/privacy.html")'); i++) await pause(20);
+  check(await evaluate('location.pathname.endsWith("/privacy.html")'), "home privacy control works");
+  await navigate("app.html");
+  await evaluate(`document.querySelector('button[data-site-target="#features"]').click()`);
+  check(await evaluate('location.hash === "#features" && document.activeElement.id === "features"'), "guide section control and focus work");
+  await evaluate(`document.querySelector('button[data-site-target="app-fi.html"]').click()`);
+  for (let i=0; i<100 && !await evaluate('document.documentElement?.lang === "fi"'); i++) await pause(20);
+  check(await evaluate('document.documentElement?.lang === "fi"'), "guide language control works");
   await navigate("app-hr.html");
   const top=await command("Page.captureScreenshot",{format:"png"});await writeFile(join(root,"review-hr-phone.png"),Buffer.from(top.data,"base64"));
   await evaluate("document.getElementById('join').scrollIntoView()");
