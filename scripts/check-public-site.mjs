@@ -51,9 +51,8 @@ try{
       canonical:document.querySelector('link[rel="canonical"]').href.split("/").at(-1),
       privacy:controls.filter(a=>a.dataset.siteTarget.startsWith("privacy.html")).map(a=>a.dataset.siteTarget),
       sections:controls.filter(a=>a.dataset.siteTarget.startsWith("#")).every(a=>document.getElementById(a.dataset.siteTarget.slice(1))),
-      noLinks:!document.querySelector("a, area"),
+      links:[...document.querySelectorAll("a, area")].map(a=>[a.getAttribute("href"), !!a.closest("#join")]),
       localTargets:controls.every(a=>!a.dataset.siteTarget.includes(":")&&!a.dataset.siteTarget.includes("/")),
-      join:[...document.querySelectorAll("#join .plain-address")].map(a=>a.textContent.trim()),
       width:document.documentElement.scrollWidth,viewport:innerWidth,
       images:[...document.images].every(i=>i.complete&&i.naturalWidth>0),
       notice:document.querySelector("[data-language-availability]")?.textContent,
@@ -69,8 +68,13 @@ try{
     check(info.direction===(l.code==="ar"?"rtl":"ltr"),"reading direction "+file);
     check(info.privacy.length>=2&&info.privacy.every(x=>x==="privacy.html#"+l.code),"privacy chapter "+file);
     check(info.sections&&info.uniqueIds,"local section targets "+file);
-    check(info.noLinks&&info.localTargets,"no clickable hyperlinks "+file);check(info.images,"images load "+file);
-    check(info.join.includes("https://groups.google.com/g/my-little-voice-testers")&&info.join.includes("https://play.google.com/apps/testing/org.mylittlevoice.aac")&&info.join.includes("https://play.google.com/store/apps/details?id=org.mylittlevoice.aac"),"plain testing addresses "+file);
+    const testerLinks = [
+      "https://groups.google.com/g/my-little-voice-testers",
+      "https://play.google.com/apps/testing/org.mylittlevoice.aac",
+      "https://play.google.com/store/apps/details?id=org.mylittlevoice.aac",
+    ];
+    check(info.localTargets,"local navigation controls "+file);check(info.images,"images load "+file);
+    check(JSON.stringify(info.links)===JSON.stringify(testerLinks.map(url=>[url,true])),"only approved clickable testing links "+file);
     check(info.notice.match(/\d+/g)?.join(",")==="33"&&info.languages===33,"availability disclosure "+file);
     check(info.credits.length===1&&info.credits[0]==="voice-credits.html#"+l.code,"voice credits control "+file);
     check(info.width<=info.viewport+1,"mobile overflow "+file+" "+JSON.stringify(info));
