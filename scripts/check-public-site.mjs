@@ -12,10 +12,11 @@ const privacyLocales = guideLocales;
 const guideFile = (code) => code === "en" ? "app.html" : "app-" + code.toLowerCase() + ".html";
 const server=createServer(async(req,res)=>{
   try{
-    const file=resolve(root, "."+new URL(req.url,"http://localhost").pathname);
+    const pathname = new URL(req.url, "http://localhost").pathname;
+    const file = resolve(root, "." + (pathname === "/" ? "/index.html" : pathname));
     if(!file.startsWith(root+"\\")&&!file.startsWith(root+"/"))throw Error("path");
     const bytes=await readFile(file);
-    res.setHeader("Content-Type",({".html":"text/html; charset=utf-8",".png":"image/png",".xml":"application/xml",".js":"text/javascript; charset=utf-8"})[extname(file)]??"text/plain; charset=utf-8");res.end(bytes);
+    res.setHeader("Content-Type",({".html":"text/html; charset=utf-8",".png":"image/png",".xml":"application/xml",".js":"text/javascript; charset=utf-8",".css":"text/css; charset=utf-8"})[extname(file)]??"text/plain; charset=utf-8");res.end(bytes);
   }catch{res.writeHead(404);res.end("Not found");}
 });
 await new Promise(r=>server.listen(0,"127.0.0.1",r));
@@ -35,7 +36,7 @@ try{
   const evaluate=async(expression)=>{const r=await command("Runtime.evaluate",{expression,returnByValue:true,awaitPromise:true});if(r.exceptionDetails)throw Error(r.exceptionDetails.exception?.description??r.exceptionDetails.text);return r.result.value;};
   await command("Page.enable");await command("Runtime.enable");
   async function navigate(path){await command("Page.navigate",{url:base+"/"+path});for(let i=0;i<100;i++){if(await evaluate("document.readyState==='complete' && location.href==="+JSON.stringify(base+"/"+path)))return;await pause(50);}throw Error("load timeout "+path);}
-  for(const l of guideLocales){
+  for(const l of guideLocales.filter(locale => locale.code !== "en")){
     const file=guideFile(l.code);
     await command("Emulation.setDeviceMetricsOverride",{width:375,height:812,deviceScaleFactor:1,mobile:false});
     await navigate(file);
@@ -146,17 +147,34 @@ try{
     const original = (await readFile(join(root, "notices", filename), "utf8")).replace(/\r\n/g, "\n");
     check(content === original, "verbatim original notice " + filename);
   }
-  await navigate("index.html");
-  check(await evaluate('!document.querySelector("a, area")'), "no hyperlinks on the home page");
-  await evaluate(`document.querySelector('button[data-site-target="privacy.html"]').click()`);
-  for (let i=0; i<100 && !await evaluate('location.pathname.endsWith("/privacy.html")'); i++) await pause(20);
-  check(await evaluate('location.pathname.endsWith("/privacy.html")'), "home privacy control works");
-  await navigate("app.html");
+  await command("Page.navigate", {url: base + "/"});
+  for (let i = 0; i < 100 && !await evaluate('location.pathname === "/app.html" && document.readyState === "complete"'); i++) await pause(50);
+  check(await evaluate('location.pathname === "/app.html" && document.documentElement.lang === "en"'), "site root opens English launch page");
+  for (const width of [320, 375, 768, 1280]) {
+    await command("Emulation.setDeviceMetricsOverride", {width, height: 900, deviceScaleFactor: 1, mobile: false});
+    check(await evaluate('document.documentElement.scrollWidth <= innerWidth + 1'), "launch layout at " + width);
+  }
+  check(await evaluate(`(() => {
+    const play = document.querySelector(".play-button");
+    return play.disabled && !!document.getElementById(play.getAttribute("aria-describedby"))
+      && !document.querySelector("a, area")
+      && document.querySelectorAll(".modes article").length === 4;
+  })()`), "launch button is disabled and the four modes are present");
   await evaluate(`document.querySelector('button[data-site-target="#features"]').click()`);
-  check(await evaluate('location.hash === "#features" && document.activeElement.id === "features"'), "guide section control and focus work");
-  await evaluate(`document.querySelector('button[data-site-target="app-fi.html"]').click()`);
-  for (let i=0; i<100 && !await evaluate('document.documentElement?.lang === "fi"'); i++) await pause(20);
-  check(await evaluate('document.documentElement?.lang === "fi"'), "guide language control works");
+  check(await evaluate('location.hash === "#features" && document.activeElement.id === "features"'), "launch section control and focus work");
+  await evaluate('document.querySelector(".languages-details summary").click()');
+  check(await evaluate('document.querySelector(".languages-details").open && document.querySelectorAll(".languages li").length === 33'), "33 supported languages are revealed");
+  await evaluate('document.querySelector(".editor-figure").scrollIntoView()');
+  for (let i = 0; i < 100 && !await evaluate('[...document.images].every(img => img.complete && img.naturalWidth > 0)'); i++) await pause(50);
+  check(await evaluate('[...document.images].every(img => img.complete && img.naturalWidth > 0)'), "launch screenshots load");
+  await evaluate(`document.querySelector('footer button[data-site-target="privacy.html#en"]').click()`);
+  for (let i = 0; i < 100 && !await evaluate('location.pathname === "/privacy.html" && location.hash === "#en"'); i++) await pause(20);
+  check(await evaluate('location.pathname === "/privacy.html" && location.hash === "#en"'), "launch privacy link works");
+  await navigate("app.html");
+  await evaluate(`document.querySelector('footer button[data-site-target="voice-credits.html#en"]').click()`);
+  for (let i = 0; i < 100 && !await evaluate('location.pathname === "/voice-credits.html" && location.hash === "#en"'); i++) await pause(20);
+  check(await evaluate('location.pathname === "/voice-credits.html" && location.hash === "#en"'), "launch voice credits link works");
+  await command("Emulation.setDeviceMetricsOverride", {width:375,height:812,deviceScaleFactor:1,mobile:false});
   await navigate("app-hr.html");
   const top=await command("Page.captureScreenshot",{format:"png"});await writeFile(join(root,"review-hr-phone.png"),Buffer.from(top.data,"base64"));
   await evaluate("document.getElementById('join').scrollIntoView()");
