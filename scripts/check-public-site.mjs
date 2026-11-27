@@ -16,7 +16,7 @@ const server=createServer(async(req,res)=>{
     const file = resolve(root, "." + (pathname === "/" ? "/index.html" : pathname));
     if(!file.startsWith(root+"\\")&&!file.startsWith(root+"/"))throw Error("path");
     const bytes=await readFile(file);
-    res.setHeader("Content-Type",({".html":"text/html; charset=utf-8",".png":"image/png",".xml":"application/xml",".js":"text/javascript; charset=utf-8",".css":"text/css; charset=utf-8"})[extname(file)]??"text/plain; charset=utf-8");res.end(bytes);
+    res.setHeader("Content-Type",({".html":"text/html; charset=utf-8",".png":"image/png",".xml":"application/xml",".js":"text/javascript; charset=utf-8",".css":"text/css; charset=utf-8",".webp":"image/webp"})[extname(file)]??"text/plain; charset=utf-8");res.end(bytes);
   }catch{res.writeHead(404);res.end("Not found");}
 });
 await new Promise(r=>server.listen(0,"127.0.0.1",r));
@@ -108,6 +108,11 @@ try{
         && document.querySelectorAll("article").length === ${privacyLocales.length}
         && document.querySelectorAll("a, area").length === 0;
     })()`), "language coverage, Arabic deep link, and no clickable links on " + page);
+    const englishContact = page === "privacy.html" ? await evaluate(`(() => {
+      const address = document.querySelector("#en address");
+      const lines = Array.from(address.childNodes, node => node.textContent.trim());
+      return [lines.find(line => line.includes("@")), lines.find(line => line.startsWith("+"))];
+    })()`) : [];
     for (const locale of privacyLocales) {
       await chooseDocumentLanguage(locale.code);
       const chapter = await evaluate(`(() => {
@@ -129,7 +134,7 @@ try{
       check(!chapter.overflow, "document layout " + page + "#" + locale.code);
       if (page === "privacy.html") {
         check(chapter.headings === 7 && chapter.paragraphs >= 14, "privacy topics " + locale.code);
-        check(chapter.contact.includes("helen_penjam@yahoo.com") && chapter.contact.includes("+372 5816 6552"), "privacy contact " + locale.code);
+        check(englishContact.every(value => value && chapter.contact.includes(value)), "privacy contact " + locale.code);
         check(chapter.ageSignals === 1 && chapter.date === "2026-11-24", "policy disclosure and date " + locale.code);
         for (const address of ["https://policies.google.com/privacy", "https://www.aki.ee", "https://hile616-hub.github.io/my-little-voice-downloads/privacy.html"]) {
           check(chapter.text.includes(address), "plain privacy address " + locale.code + " " + address);
@@ -153,6 +158,11 @@ try{
   for (const width of [320, 375, 768, 1280]) {
     await command("Emulation.setDeviceMetricsOverride", {width, height: 900, deviceScaleFactor: 1, mobile: false});
     check(await evaluate('document.documentElement.scrollWidth <= innerWidth + 1'), "launch layout at " + width);
+    check(await evaluate(`(() => {
+      const image = document.querySelector(".hero-screen").getBoundingClientRect();
+      const stage = document.querySelector(".hero-stage").getBoundingClientRect();
+      return image.top >= stage.top && image.bottom <= stage.bottom && image.left >= stage.left && image.right <= stage.right;
+    })()`), "full picture board fits its illustration at " + width);
   }
   check(await evaluate(`(() => {
     const play = document.querySelector(".play-button");
@@ -160,11 +170,15 @@ try{
       && !document.querySelector("a, area")
       && document.querySelectorAll(".modes article").length === 4;
   })()`), "launch button is disabled and the four modes are present");
+  await evaluate(`document.querySelector('.primary[data-site-target="#start"]').click()`);
+  check(await evaluate('location.hash === "#start" && document.activeElement.id === "start" && document.querySelectorAll(".guide-steps > li").length === 3'), "first-board walkthrough opens and receives focus");
+  await evaluate('document.querySelector(".guide-detail summary").click()');
+  check(await evaluate('document.querySelector(".guide-detail").open && document.querySelector(".guide-detail").textContent.includes("Words to speak")'), "personalisation instructions expand");
   await evaluate(`document.querySelector('button[data-site-target="#features"]').click()`);
   check(await evaluate('location.hash === "#features" && document.activeElement.id === "features"'), "launch section control and focus work");
   await evaluate('document.querySelector(".languages-details summary").click()');
   check(await evaluate('document.querySelector(".languages-details").open && document.querySelectorAll(".languages li").length === 33'), "33 supported languages are revealed");
-  await evaluate('document.querySelector(".editor-figure").scrollIntoView()');
+  await evaluate('document.querySelector(".routine-figure").scrollIntoView()');
   for (let i = 0; i < 100 && !await evaluate('[...document.images].every(img => img.complete && img.naturalWidth > 0)'); i++) await pause(50);
   check(await evaluate('[...document.images].every(img => img.complete && img.naturalWidth > 0)'), "launch screenshots load");
   await evaluate(`document.querySelector('footer button[data-site-target="privacy.html#en"]').click()`);

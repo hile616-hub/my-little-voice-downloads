@@ -3,9 +3,10 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="robots" content="noindex, nofollow">
+  <meta name="robots" content="index, follow">
+  <meta name="format-detection" content="telephone=no,email=no,address=no">
   <meta name="referrer" content="no-referrer">
-  <meta name="description" content="My Little Voice is an offline AAC app for Android. Tap pictures, build a message, type to speak, or draw and show. Supports 33 languages.">
+  <meta name="description" content="Meet My Little Voice, an offline AAC app for Android. Learn how to make a first picture board with your child’s favourite snacks, toys and activities.">
   <title>My Little Voice | Offline AAC for Android</title>
   <link rel="canonical" href="https://hile616-hub.github.io/my-little-voice-downloads/app.html">
   <link rel="icon" href="website-assets/icon.png">
@@ -13,83 +14,111 @@
   <script src="guide-navigation.js" defer></script>
 </head>
 <body>
-  <header class="site-header wrap">
-    <button class="brand link-button" type="button" data-site-target="#home">
-      <img src="website-assets/icon.png" alt="" width="42" height="42">
-      <span>My Little Voice</span>
+  <header class="wrap site-header">
+    <button class="brand plain" type="button" data-site-target="#home">
+      <img src="website-assets/icon.png" alt="" width="40" height="40">
+      My Little Voice
     </button>
     <nav aria-label="Main navigation">
-      <button class="link-button" type="button" data-site-target="#features">How it works</button>
-      <button class="link-button" type="button" data-site-target="#languages">Languages</button>
-      <button class="link-button" type="button" data-site-target="#questions">FAQ</button>
+      <button class="plain" type="button" data-site-target="#start">First board</button>
+      <button class="plain" type="button" data-site-target="#features">Inside the app</button>
+      <button class="plain" type="button" data-site-target="#languages">Languages</button>
+      <button class="plain" type="button" data-site-target="#questions">FAQ</button>
     </nav>
   </header>
 
   <main id="home">
-    <section class="hero wrap" aria-labelledby="title">
+    <section class="wrap hero" aria-labelledby="title">
       <div class="hero-copy">
-        <p class="eyebrow">Offline AAC for Android</p>
-        <h1 id="title">More ways<br>to be heard.</h1>
-        <p class="lead">“I want a drink.” “Let’s play.” “I need a break.” My Little Voice helps children who communicate without speech or use few spoken words share what they want to say.</p>
-        <div class="hero-actions">
-          <button class="play-button" type="button" disabled aria-describedby="play-status">Google Play</button>
-          <button class="secondary-button" type="button" data-site-target="#features">See how it works</button>
+        <p class="kicker"><span class="sound-mark" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span>Offline AAC for Android</p>
+        <h1 id="title">A picture can<br><em>say a lot.</em></h1>
+        <p class="lead">A snack, a favourite game, a moment to stop. My Little Voice helps children who use little or no speech share what they want to say by tapping pictures.</p>
+        <div class="hero-actions" id="join">
+          <button type="button" class="primary" data-site-target="#start">Make your first board</button>
+          <button type="button" class="play-button" disabled aria-describedby="play-status"><span>Google Play</span><small id="play-status">Coming soon</small></button>
         </div>
-        <p class="release-status" id="play-status">Coming soon to Google Play.</p>
       </div>
       <figure class="hero-figure">
-        <div class="screenshot-backdrop">
-          <div class="phone-frame">
-            <img src="website-assets/picture-board.png" alt="My Little Voice picture board with Drink, Eat, Play and More buttons." width="390" height="844" fetchpriority="high">
-          </div>
+        <div class="hero-stage">
+          <div class="halo" aria-hidden="true"></div>
+          <img class="hero-art sandwich" src="website-assets/sandwich.webp" alt="" width="512" height="512">
+          <img class="hero-art ball" src="website-assets/ball.webp" alt="" width="512" height="512">
+          <span class="spark spark-a" aria-hidden="true"></span><span class="spark spark-b" aria-hidden="true"></span>
+          <img class="screen hero-screen" src="website-assets/everyday-choices.webp" alt="My choices picture board with Water, Snack, Play time, Help me, Quiet time and Stop." width="289" height="515" fetchpriority="high">
         </div>
-        <figcaption>Tap and speak mode in My Little Voice</figcaption>
+        <figcaption>Everyday choices on a My Little Voice picture board</figcaption>
       </figure>
     </section>
 
-    <div class="facts wrap" aria-label="App highlights">
-      <div><strong>33 languages</strong><span>Choose your communication language</span></div>
-      <div><strong>Works offline</strong><span>After setup and any voice downloads</span></div>
-      <div><strong>No app account</strong><span>Boards, photos and recordings stay on-device</span></div>
-    </div>
+    <section class="guide-section" id="start" aria-labelledby="start-title">
+      <div class="wrap">
+        <div class="guide-intro">
+          <p class="kicker">Getting started</p>
+          <h2 id="start-title">Their first picture board</h2>
+          <p>AAC stands for augmentative and alternative communication. A board is a page of pictures your child can tap to say something aloud. Start with one familiar part of their day.</p>
+        </div>
+        <div class="guide-layout">
+          <ol class="guide-steps">
+            <li><h3>Choose a few favourites</h3>
+              <p>Think about what your child reaches for at snack time or playtime. A sandwich, a ball and a favourite toy are a good place to begin. Include <strong>Stop</strong> or <strong>Help me</strong> so they can tell you more than what they want.</p>
+            </li>
+            <li><h3>Put the pictures on a board</h3>
+              <p>During setup, choose <strong>Help me get started</strong> to pick pictures, then <strong>Finish setup</strong>. To add more later, open <strong>Parent</strong>, choose <strong>Boards</strong>, select the board you want, then tap <strong>Add pictures</strong>. Select your pictures and confirm.</p>
+              <details class="guide-detail"><summary>Use a family photo or your own words</summary>
+                <p>In <strong>Parent</strong>, open <strong>Pictures &amp; drawing</strong>, then <strong>My photos</strong>. Import and save a photo. You can now find it under <strong>My photos</strong> when adding pictures to a board.</p>
+                <p>To change what a picture says, hold the card and choose <strong>Edit picture</strong>. Set the <strong>Text on button</strong> to “Ball” and the <strong>Words to speak</strong> to “Let’s play ball,” for example.</p>
+              </details>
+            </li>
+            <li><h3>Try it together</h3>
+              <p>Go back to <strong>Talk</strong>. At snack time, tap <strong>Water</strong> as you say “water” and offer a drink. Pause. Your child might tap a picture, point, gesture or simply watch. Give them time to explore.</p>
+            </li>
+          </ol>
+          <figure class="guide-figure">
+            <div class="play-stage"><img class="screen" src="website-assets/lets-play.webp" alt="Let’s play board with Build, Play ball, Draw, Toy train, Go outside and Read together." width="289" height="515" loading="lazy"></div>
+            <figcaption>A playtime board with a ball, crayons and a story to read together.</figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
 
-    <section class="section wrap" id="features" aria-labelledby="features-title">
-      <div class="section-intro">
-        <h2 id="features-title">Find a way to communicate that fits</h2>
-        <p>AAC stands for augmentative and alternative communication. Start with familiar pictures, then explore the ways your child likes to communicate.</p>
+    <section class="wrap modes-section" id="features" aria-labelledby="features-title">
+      <div class="modes-intro">
+        <p class="kicker">Inside the app</p>
+        <h2 id="features-title">Four ways to communicate</h2>
+        <p>Start with a single picture. When your child wants another way to share an idea, you can try one of the other modes together.</p>
       </div>
       <div class="modes">
-        <article class="mode mode-blue"><h3>Tap and speak</h3><p>Tap a picture and hear its word or message aloud.</p></article>
-        <article class="mode mode-peach"><h3>Build a message</h3><p>Put pictures together and speak the whole message when it’s ready.</p></article>
-        <article class="mode mode-yellow"><h3>Type and speak</h3><p>Use the built-in keyboard to type words or sentences and hear them aloud.</p></article>
-        <article class="mode mode-mint"><h3>Draw and show</h3><p>Sketch something on the canvas and show it to the person you’re talking with.</p></article>
+        <article><h3>Tap and speak</h3><p>Tap one picture to hear its word or message, like “Water” or “Help me.”</p></article>
+        <article><h3>Build a message</h3><p>Choose pictures in order, then speak the whole message when it’s ready.</p></article>
+        <article><h3>Type and speak</h3><p>Use the keyboard to write your own words and hear them spoken aloud.</p></article>
+        <article><h3>Draw and show</h3><p>Sketch a shape or an idea, then show the screen to the person you’re talking with.</p></article>
       </div>
     </section>
 
-    <section class="section daily wrap" aria-labelledby="daily-title">
-      <div class="daily-copy">
-        <h2 id="daily-title">Make it theirs</h2>
-        <p>Put favourite foods, people and activities on a board. Use pictures from the app, add your own photos, or draw a picture for a card. Record a familiar voice for any picture button.</p>
-        <p>Use the password-protected Parent area to arrange boards and make a local backup of your family’s pictures and recordings.</p>
-        <h3 id="printing">On paper, too</h3>
-        <p>Show what happens next with a visual daily schedule. Save an A4 PDF or print picture cards to cut out and take along.</p>
+    <section class="wrap routine" aria-labelledby="routine-title">
+      <div class="routine-copy">
+        <p class="kicker">Daily schedules</p>
+        <h2 id="routine-title">What comes next?</h2>
+        <p>Use <strong>My Day</strong> to put a routine in pictures. At breakfast, look at what’s coming up together. Check off each step as you go, from brushing teeth to picking up a school bag.</p>
+        <p id="printing">Save an A4 PDF or print the schedule to put beside the door. You can also print individual picture cards to take along.</p>
       </div>
-      <figure class="editor-figure">
-        <div class="editor-backdrop">
-          <img src="website-assets/draw-a-picture.png" alt="The Draw a picture editor with a sketch, drawing tools and a preview of the picture card." width="390" height="844" loading="lazy">
+      <figure class="routine-figure">
+        <div class="routine-images">
+          <img class="schedule-screen" src="website-assets/my-day.webp" alt="My Day with Eat breakfast checked off and Brush teeth, Put on shoes and Get my bag still to do." width="289" height="515" loading="lazy">
+          <img class="schedule-paper" src="website-assets/print-schedule.webp" alt="The same six morning activities laid out as a printable sheet." width="272" height="385" loading="lazy">
         </div>
-        <figcaption>Drawing a custom picture card in the app</figcaption>
+        <figcaption>A morning routine in My Day and on paper</figcaption>
       </figure>
     </section>
 
-    <section class="section language-band" id="languages" aria-labelledby="languages-title">
-      <div class="wrap">
-        <div class="section-intro">
+    <section class="language-band" id="languages" aria-labelledby="languages-title">
+      <div class="wrap language-layout">
+        <div class="language-intro">
           <h2 id="languages-title">33 languages</h2>
-          <p>Choose one language for the app menus and another for communication. You can download optional voices from Google Play during setup or later in Parent settings.</p>
+          <p>Choose one language for the menus and another for the words your child hears. Optional voices can be downloaded during setup or later in Parent settings. Once set up, communication works offline.</p>
         </div>
         <details class="languages-details" data-language-availability>
-          <summary>See all 33 languages</summary>
+          <summary>Explore all 33 languages</summary>
           <ul class="languages" aria-label="Supported languages">
             <li lang="en">English</li>
             <li lang="et">Eesti</li>
@@ -129,39 +158,22 @@
       </div>
     </section>
 
-    <section class="section wrap about" aria-labelledby="about-title">
-      <h2 id="about-title">It started with my daughter</h2>
-      <p>I made My Little Voice for my daughter. I wanted her to have a way to tell me what she needed using pictures she recognised and words we use at home. I hope it gives other families a place to start, too.</p>
-    </section>
-
-    <section class="section wrap questions" id="questions" aria-labelledby="questions-title">
+    <section class="wrap questions" id="questions" aria-labelledby="questions-title">
       <h2 id="questions-title">Common questions</h2>
       <div>
-        <details>
-          <summary>Do we need Wi-Fi to use it?</summary>
-          <p>You need an internet connection to install the app, download optional voices and get updates. Once setup is complete, communication and speech work offline.</p>
-        </details>
-        <details>
-          <summary>Where are our photos and recordings stored?</summary>
-          <p>Your boards, photos and recordings stay on your device. You can save a local backup and restore it later.</p>
-        </details>
-        <details>
-          <summary>Can we use it on a tablet?</summary>
-          <p>My Little Voice is designed for Android phones and tablets. You’ll be able to check device compatibility from the Google Play listing.</p>
-        </details>
-        <details>
-          <summary>Where can I read the privacy policy?</summary>
-          <p>You can read it here or offline in the app’s Parent area. <button class="link-button text-link" type="button" data-site-target="privacy.html#en">Read the privacy policy</button>.</p>
-        </details>
+        <details><summary>Do we need Wi-Fi?</summary><p>You need an internet connection to install the app, download optional voices and get updates. Once setup is complete, communication and speech work offline.</p></details>
+        <details><summary>Where are our photos and recordings stored?</summary><p>Your boards, photos and recordings stay on your device. In the password-protected Parent area, you can make a local backup and restore it later.</p></details>
+        <details><summary>Can we use it on a tablet?</summary><p>My Little Voice is designed for Android phones and tablets. Once the app launches, you can check your device on Google Play.</p></details>
+        <details><summary>Who made My Little Voice?</summary><p>A parent made My Little Voice for her nonverbal daughter so they could communicate offline with familiar pictures and the words they use at home.</p></details>
+        <details><summary>Where can I read the privacy policy?</summary><p>You can read it here or offline in the app’s Parent area. <button class="plain inline" type="button" data-site-target="privacy.html#en">Read the privacy policy</button>.</p></details>
       </div>
     </section>
   </main>
-
-  <footer class="site-footer wrap">
-    <strong>My Little Voice</strong>
+  <footer class="wrap site-footer">
+    <button class="plain brand" type="button" data-site-target="#home"><img src="website-assets/icon.png" alt="" width="34" height="34">My Little Voice</button>
     <nav aria-label="Privacy and licences">
-      <button class="link-button" type="button" data-site-target="privacy.html#en">Privacy policy</button>
-      <button class="link-button" type="button" data-site-target="voice-credits.html#en">Licences and voice credits</button>
+      <button class="plain" type="button" data-site-target="privacy.html#en">Privacy policy</button>
+      <button class="plain" type="button" data-site-target="voice-credits.html#en">Licences and voice credits</button>
     </nav>
   </footer>
 </body>
